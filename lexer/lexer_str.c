@@ -6,11 +6,12 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:43 by museker           #+#    #+#             */
-/*   Updated: 2023/09/28 12:47:00 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/04 18:09:57 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <signal.h>
 
 char	*check_dollar(t_data *info, char *s)
 {
@@ -18,10 +19,11 @@ char	*check_dollar(t_data *info, char *s)
 	int		z;
 	char	**new;
 	char	*temp;
+	char	*km;
 
 	i = 0;
 	z = -1;
-	new = malloc(sizeof(char *) * (ft_strlen(s) + 1));
+	new = (char **)malloc(sizeof(char *) * (ft_strlen(s) + 1));
 	while (s[i])
 	{
 		if (s[i] == '$')
@@ -31,7 +33,7 @@ char	*check_dollar(t_data *info, char *s)
 		new[++z] = temp;
 	}
 	new[++z] = 0;
-	char *km = char_combining(new);
+	km = char_combining(new);
 	two_pointer_free(new);
 	return (km);
 }
@@ -68,9 +70,16 @@ void	*no_dollar_split(char *s, int *in)
 	int		cpy_in;
 
 	cpy_in = *in;
-	while (s[cpy_in++])
+	while (s[cpy_in])
+	{
 		if (s[cpy_in] == '$' || s[cpy_in] == ' ')
+		{
+			cpy_in++;
 			break ;
+		}
+		cpy_in++;
+	}
+		
 	new = ft_substr(s, *in, cpy_in - *in);
 	*in = cpy_in;
 	return (new);

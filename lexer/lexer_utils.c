@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:04:17 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/02 16:06:50 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/04 18:07:25 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ char	**pipe_split(char	*s, char c, int p)
 			i++;
 		if (count_word(s, c) + p == j)
 			break ;
-		str_split[j++] = ft_substr(s, temp, i++ - temp);
+		str_split[j++] = ft_substr(s, temp, i - temp);
+		if (s[i])
+			i++;
 		if (count_word(s, c) + p != j)
 			str_split[j++] = ft_strdup("|");
 	}
@@ -132,6 +134,7 @@ void	lst_combining(t_data *info)
 		info->arg = info->arg->next;
 	}
 	info->cmd->commands[++k] = 0;
+	info->cmd->flags[k] = 0;
 }
 
 void	two_pointer_free(char **s)

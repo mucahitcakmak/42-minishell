@@ -6,7 +6,7 @@
 /*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:54 by museker           #+#    #+#             */
-/*   Updated: 2023/09/30 17:09:08 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/02 20:33:18 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,19 @@ int	ft_lstsize(t_list *lst)
 		i++;
 	}
 	return (i);
+}
+
+void	ft_lstclear(t_list **lst)
+{
+	t_list	*start;
+	t_list	*temp;
+
+	start = *lst;
+	while (start)
+	{
+		temp = start;
+		start = start->next;
+		free(temp);
+	}
+	*lst = NULL;
 }
