@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:04:17 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/04 18:07:25 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/04 22:31:14 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,20 +118,23 @@ void	pipe_adder(t_data *info, char *str, int *k)
 void	lst_combining(t_data *info)
 {
 	int		k;
+	t_list	*iter;
 
 	k = -1;
+	iter = NULL;
+	iter = info->arg;
 	info->cmd->commands = malloc(10000);
 	info->cmd->flags = malloc(sizeof(int) * 10000);
-	while (info->arg)
+	while (iter)
 	{
-		if (ft_char_count(info->arg->value, '|') && (int)(info->arg->key) == Q0)
-			pipe_adder(info, info->arg->value, &k);
+		if (ft_char_count(iter->value, '|') && (int)(iter->key) == Q0)
+			pipe_adder(info, iter->value, &k);
 		else
 		{
-			info->cmd->commands[++k] = info->arg->value;
-			info->cmd->flags[k] = (int)info->arg->key;
+			info->cmd->commands[++k] = iter->value;
+			info->cmd->flags[k] = (int)iter->key;
 		}
-		info->arg = info->arg->next;
+		iter = iter->next;
 	}
 	info->cmd->commands[++k] = 0;
 	info->cmd->flags[k] = 0;

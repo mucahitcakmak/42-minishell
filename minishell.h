@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/04 16:40:49 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/04 21:27:14 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,18 @@ void		find_path_and_exec(t_data *info, char **read_line);
 int			create_fork_and_exec(t_data *info, char **read_line);
 void		set_env_p(t_data *info, char **env_p);
 
-// exec/exec.c
-int			find_pipe_count(t_data *info);
-void		exec(t_data *info);
+// exec/exec_utils.c
+void		ft_process_merge(t_data *info, int i);
 int			find_pipe_count(t_data *info);
 void		pipe_finder(t_data *info, int *count);
+void		pipe_close(t_data *info);
+
+// exec/exec.c
+void		exec(t_data *info);
+int			exec_command(t_data *info, char **read_line, int count, int i);
+void		create_fork(t_data *info, char **read_line, int count, int i);
+void		find_path_and_exec(t_data *info, char **read_line);
+char		**read_line_edit(t_data *info, int index);
 
 // lexer/lexer_str.c
 char		*check_dollar(t_data *info, char *s);

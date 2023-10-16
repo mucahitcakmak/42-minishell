@@ -6,12 +6,11 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:43 by museker           #+#    #+#             */
-/*   Updated: 2023/10/04 18:09:57 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/04 22:36:18 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <signal.h>
 
 char	*check_dollar(t_data *info, char *s)
 {
@@ -35,6 +34,7 @@ char	*check_dollar(t_data *info, char *s)
 	new[++z] = 0;
 	km = char_combining(new);
 	two_pointer_free(new);
+	free(s);
 	return (km);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 15:17:23 by museker           #+#    #+#             */
-/*   Updated: 2023/09/26 21:13:36 by mucakmak          ###   ########.fr       */
+/*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
+/*   Updated: 2023/10/04 22:45:14 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,23 @@ int	main(int argc, char *argv[], char **env_p)
 
 	info = malloc(sizeof(t_data));
 	info->cmd = malloc(sizeof(t_commands));
+	info->arg = NULL;
 	set_env_p(info, env_p);
 	while (1)
 	{
 		read_line = readline("\033[0;31m(Minishell)$>\033[0m ");
 		if (!*read_line)
+		{
+			free(read_line);
 			continue;
+		}
 		add_history(read_line);
 		lexer(info, read_line);
 		exec(info);
 		two_pointer_free(info->cmd->commands);
+		free(info->cmd->flags);
 		free(read_line);
+		ft_lstclear(&info->arg);
 	}
 	return (0);
 }
