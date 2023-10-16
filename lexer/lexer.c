@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:46 by museker           #+#    #+#             */
-/*   Updated: 2023/10/12 02:02:33 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:05:39 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	quotes(t_data *info, char *rl, int *index, int c1)
 		(*index)++;
 	}
 	nl = ft_substr(rl, start, end - start);
-	if (c1 == '"' && ft_char_count(rl, '$'))
+	if (c1 == '"' && char_c(rl, '$'))
 		ft_lstadd_back(&info->arg, ft_lstnew((void *)Q1, check_dollar(info,
 					nl)));
 	else

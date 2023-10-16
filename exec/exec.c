@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/13 19:54:18 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:05:39 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	heredoc_check(t_data *info, int i)
 		j = -1;
 		if (info->cmd->flags[i] == Q0)
 		{
-			if (ft_char_count(s[i], '|'))
+			if (char_c(s[i], '|'))
 				break ;
 			while (s[i][++j])
 				if (s[i][j] == '<' && s[i][j + 1] == '<')

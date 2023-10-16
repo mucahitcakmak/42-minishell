@@ -12,7 +12,7 @@ SRCS =	main.c \
 
 CC = @gcc
 NAME = minishell
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror
 LFLAGS = -lreadline
 RM = @rm -rf
 

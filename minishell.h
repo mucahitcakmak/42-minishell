@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/13 19:53:56 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:05:39 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int			exit_builtin(t_data *info, char *rl);
 
 // export_builtin_utils.c
 void		export_is_path(t_data *info, char *s, char *p);
-int			check_valid(char *s, int i);
+int			check_valid(char *s1, char *s2, int i);
 void		change_export(t_data *info, char *s);
 int			export_control_and_change(t_list *info, char *s, char *p, int i);
 
@@ -191,7 +191,7 @@ int			char_count_lst(t_list *lst, char c);
 
 // lexer_utils.c
 int			pipe_ct(char *read_line);
-int			ft_char_count(char *read_line, int c);
+int			char_c(char *read_line, int c);
 char		**pipe_split(char *s, char *str_c, char c, int p);
 void		pipe_adder(t_data *info, char *str, int *k);
 

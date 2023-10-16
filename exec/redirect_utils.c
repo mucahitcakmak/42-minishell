@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:06:32 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/13 19:55:35 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:05:39 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,13 @@ void	lst_run_redirect(t_data *info, t_list **lst, int i)
 	while (tmp)
 	{
 		tmp = go_redirect(tmp);
-		if (tmp && tmp->next && ft_char_count(tmp->value, '>') == 1)
+		if (tmp && tmp->next && char_c(tmp->value, '>') == 1)
 			overwrite_output(info, tmp);
-		else if (tmp && tmp->next && ft_char_count(tmp->value, '>') == 2)
+		else if (tmp && tmp->next && char_c(tmp->value, '>') == 2)
 			append_output(info, tmp);
-		else if (tmp && tmp->next && ft_char_count(tmp->value, '<') == 1)
+		else if (tmp && tmp->next && char_c(tmp->value, '<') == 1)
 			overwrite_input(info, tmp);
-		else if (tmp && tmp->next && ft_char_count(tmp->value, '<') == 2)
+		else if (tmp && tmp->next && char_c(tmp->value, '<') == 2)
 			append_input(info, tmp, i);
 		if (tmp)
 			tmp = tmp->next;
