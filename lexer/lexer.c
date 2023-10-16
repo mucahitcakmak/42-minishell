@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:46 by museker           #+#    #+#             */
-/*   Updated: 2023/10/04 22:45:00 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:19:35 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@ void	lexer(t_data *info, char *read_line)
 {
 	quote(info, read_line);
 	lst_info_combining(info);
-	// int i =-1;
-	// char **tmp;
-	// tmp = info->cmd->commands;
-	// while (tmp[++i])
-	// 	printf("DENEME: (%s)\n",tmp[i]);
 }
 
 void	quote(t_data *info, char *read_line)

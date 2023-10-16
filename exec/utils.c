@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect.c                                         :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/05 12:47:24 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:08:58 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char	**lst_redirect_combining(t_list *lst)
 	str = malloc(10000);
 	while (iter)
 	{
-		str[++k] = iter->value;
+		if (iter->value[0])
+			str[++k] = iter->value;
 		iter = iter->next;
 	}
 	str[++k] = 0;

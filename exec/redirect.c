@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/05 12:47:24 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/06 17:25:57 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_list	*go_redirect(t_list *lst)
 	return (lst);
 }
 
+
 void	output_redirection(t_data *info, t_list	*lst)
 {
 	int		fd;
@@ -87,7 +88,6 @@ void	output_redirection(t_data *info, t_list	*lst)
 	fd = open(s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
  	dup2(fd, 1);
 	close(fd);
-	free(s);
 	return ;
 }
 
@@ -105,15 +105,46 @@ void	lst_run_redirect(t_data *info, t_list **lst)
 			tmp = tmp->next;
 	}
 }
+char	**ft_abc(t_data *info, char **s, int count)
+{
+	int	i;
+	char	**p;
+	int	j;
+	int	k;
+	int	l;
+
+	p = malloc(sizeof(char *) * 1000);
+	j = -1;
+	i = -1;
+	k = 0;
+	while (s[++i])
+	{
+		if (!s[i][0] || s[i][0] == ' ')
+			continue;
+		if (!ft_strchr(s[i], ' '))
+			p[k++] = ft_strdup(s[i]);
+		else
+		{
+			if (info->cmd->flags[count+i] == Q1)
+				p[k++] = ft_strdup(s[i]);
+			else
+				p[k++] = ft_substr(s[i], 0, ft_find_index(s[i], ' '));
+		}
+	}
+	p[k] = NULL;
+	return (p);
+}
 
 char	**redirect(t_data *info, int count)
 {
 	int	j;
 	t_list *lst;
+	char	**str;
 
 	lst = NULL;
 	lst_add_redirect(info, &lst, count);
 	lst_run_redirect(info, &lst);
-	return (lst_redirect_combining(lst));
+	str = ft_abc(info, lst_redirect_combining(lst), count);
+	return (str);
 }
  
