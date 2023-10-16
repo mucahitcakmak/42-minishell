@@ -3,133 +3,88 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/10 18:40:32 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/12 00:38:41 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	export_is_path(t_data *info, char *s, char *p)
+void	export_builtin(t_data *info)
 {
-	if (!ft_strcmp(s, "PATH"))
+	t_list	*exlst;
+
+	exlst = info->export_lst;
+	while (exlst)
 	{
-		two_pointer_free(info->paths);
-		info->paths = ft_split(p, ':');
-		int i = -1;
-		while (info->paths[++i])
-			printf("pathmi: (%s)\n", info->paths[i]);
+		printf("declare -x ");
+		printf("%s=\"%s\"\n", exlst->key, exlst->value);
+		exlst = exlst->next;
 	}
+	exit(0);
 }
 
-void    export_builtin(t_data *info)
+int	err_export(t_data *info, char **s, t_list *tlst)
 {
-    t_list  *exlst;
-
-    exlst = info->export_lst;
-    while (exlst)
-    {
-        printf("declare -x ");
-        printf("%s=\"%s\"\n", exlst->key, exlst->value);
-        exlst = exlst->next;
-    }
-    exit(0);
-}
-
-void	change_export(t_data *info, char *s)
-{
-	char	*tmp;
-	char	*tmp2;
-
-	if (ft_char_count(s, '='))
-	{
-		tmp = ft_substr(s, 0, find_i(s, '='));
-		tmp2 = ft_substr(s, find_i(s, '=') + 1, 
-			ft_strlen(s) - find_i(s, '=') + 1);
-		export_control_and_change(info->env_lst, tmp, tmp2, 1);
-		tmp = ft_substr(s, 0, find_i(s, '='));
-		tmp2 = ft_substr(s, find_i(s, '=') + 1, 
-			ft_strlen(s) - find_i(s, '=') + 1);
-		export_control_and_change(info->export_lst, tmp, tmp2, 1);
-		export_is_path(info, tmp, tmp2);
-	}
-	else
-		export_control_and_change(info->export_lst, s, ft_strdup(""), 0);
+	two_pointer_free(s);
+	ft_lstclear(&tlst);
+	err_message(info, "Syntax Error");
+	return (1);
 }
 
 int	export_syntax(t_data *info)
 {
 	int		i;
 	t_list	*tlst;
-	char **s;
+	char	**s;
 
 	i = 0;
 	tlst = NULL;
 	while (info->cmd->commands[++i])
-		ft_lstadd_back(&tlst, ft_lstnew((void *)(long)info->cmd->flags[i], info->cmd->commands[i]));
+		ft_lstadd_back(&tlst, ft_lstnew((void *)(long)info->cmd->flags[i],
+				info->cmd->commands[i]));
 	s = lst_redirect_combining(tlst);
 	i = -1;
 	while (s[++i])
 		if (ft_char_count(s[i], '='))
 			if (find_i(s[i], '=') == 0)
-				return (err_message(info, "Syntax Error"));
+				return (err_export(info, s, tlst));
 	i = -1;
 	while (s[++i])
 		change_export(info, s[i]);
+	two_pointer_free(s);
+	ft_lstclear(&tlst);
 	return (0);
 }
 
-void    env_builtin(t_data *info)
+void	env_builtin(t_data *info)
 {
-    t_list  *envlst;
+	t_list	*envlst;
 
-    envlst = info->env_lst;
-    while (envlst)
-    {
-        printf("%s=%s\n", envlst->key, envlst->value);
-        envlst = envlst->next;
-    }
-    exit(0);
-}
-
-
-int	export_control_and_change(t_list *info, char *s, char *p, int i)
-{
-	int		j;
-	t_list *tmp;
-
-	tmp = info;
-	while (tmp)
+	envlst = info->env_lst;
+	while (envlst)
 	{
-		if (!ft_strcmp((const char *)tmp->key, s))
-		{
-			if (i)
-			{
-				free(tmp->value);
-				tmp->value = ft_strdup(p);
-			}
-			return (0);
-		}
-		tmp = tmp->next;
+		printf("%s=%s\n", envlst->key, envlst->value);
+		envlst = envlst->next;
 	}
-	ft_lstadd_back(&info, ft_lstnew(s, p));
-	return (1);
+	exit(0);
 }
 
-int    add_export(t_data *info, char *rl)
+int	add_export(t_data *info, char *rl)
 {
-	char	**s;
 	t_list	*tmp;
 
 	tmp = info->env_lst;
-    if (!check_builtin_str(info, "export") && info->cmd->commands[1])
+	if (!check_builtin_str(info, "export") && info->cmd->commands[1])
 	{
-		export_syntax(info);
-        free_info_and_rl(info, rl);
-		info->exit_code = 0;
-    	return (1);
+		if (export_syntax(info))
+			g_data->exit_code = 1;
+		else
+			g_data->exit_code = 0;
+		free_info_and_rl(info, rl);
+		return (1);
 	}
-    return (0);
+	return (0);
 }

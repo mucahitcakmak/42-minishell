@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/10 19:28:16 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/12 01:20:52 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	unset_is_path(t_data *info, t_list *path_lst)
 void	unset_clear(t_data *info, t_list **lst, char *s)
 {
 	t_list	*tmp;
-	t_list	*tmp2;
-	t_list	*tmp3;
 	t_list	*tmp4;
 
 	tmp = (*lst);
@@ -33,9 +31,8 @@ void	unset_clear(t_data *info, t_list **lst, char *s)
 	{
 		if (!ft_strcmp(tmp->key, s))
 		{
-			tmp3 = tmp;
 			tmp = tmp->next;
-			break;
+			break ;
 		}
 		else if (!ft_strcmp((*lst)->next->key, s))
 		{
@@ -55,7 +52,6 @@ void	unset_clear(t_data *info, t_list **lst, char *s)
 void	unset_run(t_data *info, char *s)
 {
 	t_data	*tmp;
-	t_list	*tmp_lst;
 
 	tmp = info;
 	unset_clear(info, &info->env_lst, s);
@@ -66,16 +62,19 @@ int	unset_syntax(t_data *info)
 {
 	int		i;
 	t_list	*tlst;
-	char **s;
+	char	**s;
 
 	i = 0;
 	tlst = NULL;
 	while (info->cmd->commands[++i])
-		ft_lstadd_back(&tlst, ft_lstnew((void *)(long)info->cmd->flags[i], info->cmd->commands[i]));
+		ft_lstadd_back(&tlst, ft_lstnew((void *)(long)info->cmd->flags[i],
+				info->cmd->commands[i]));
 	s = lst_redirect_combining(tlst);
 	i = -1;
 	while (s[++i])
 		unset_run(info, s[i]);
+	two_pointer_free(s);
+	ft_lstclear(&tlst);
 	return (0);
 }
 
@@ -88,7 +87,7 @@ int	unset_builtin(t_data *info, char *rl)
 	{
 		unset_syntax(info);
 		free_info_and_rl(info, rl);
-		info->exit_code = 0;
+		g_data->exit_code = 0;
 		return (1);
 	}
 	return (0);

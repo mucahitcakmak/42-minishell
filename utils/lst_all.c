@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:54 by museker           #+#    #+#             */
-/*   Updated: 2023/10/10 14:09:05 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:40:46 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,3 @@ void	ft_lstclear(t_list **lst)
 	}
 	*lst = NULL;
 }
-
