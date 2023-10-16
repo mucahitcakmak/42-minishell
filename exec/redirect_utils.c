@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:06:32 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/13 18:43:35 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:55:35 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	append_input(t_data *info, t_list *lst, int i)
 
 	counter++;
 	s = rd_last_str(lst);
-	signal(SIGINT, hg_signal);
+	signal(SIGINT, ft_sig_handler);
 	while (1)
 	{
 		if (g_data->hd->flag)
@@ -67,15 +67,14 @@ void	append_input(t_data *info, t_list *lst, int i)
 		rd = readline("> ");
 		if (!ft_strcmp(rd, s))
 			break ;
-		if (counter == info->hd[i].flag)
+		if (counter == info->hd->flag)
 		{
 			ft_putstr_fd(rd, info->hd[i].fd[1]);
 			ft_putchar_fd('\n', info->hd[i].fd[1]);
 		}
 	}
-	if (counter == info->hd->flag)
-		dup2(info->hd[i].fd[0], 0);
-	pipe_close(info);
+	if (counter == info->hd[i].flag)
+		close(info->hd[i].fd[1]);
 	return ;
 }
 

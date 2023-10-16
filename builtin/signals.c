@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 22:56:01 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/12 00:18:14 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/13 19:55:09 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 void	ft_sig_handler(int sig)
 {
-	if (sig == SIGINT)
+	if (sig == SIGINT && g_data->check_fork == 0)
 	{
 		(void)sig;
 		g_data->exit_code = 1;
 		write(1, "\033[A", 3);
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	}
+	else if (sig == SIGINT && g_data->check_fork == 1)
+	{
+		g_data->exit_code = 1;
+		exit(1);
 	}
 }
 

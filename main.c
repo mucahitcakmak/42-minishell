@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/13 17:01:35 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/13 19:54:07 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_data	*ft_initializer(void)
 	g_data = malloc(sizeof(t_data));
 	g_data->hd = malloc(sizeof(sizeof(t_heredoc)));
 	g_data->hd->flag = 0;
+	g_data->check_fork = 0;
 	return (info);
 }
 

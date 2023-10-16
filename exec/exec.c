@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/13 18:07:58 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/13 19:54:18 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	exec(t_data *info, char *rl)
 	free_info_and_rl(info, rl);
 	free(info->process);
 	free(info->hd);
+	g_data->check_fork = 0;
 }
 
 int	exec_command(t_data *info, char **read_line, int count, int i)
@@ -84,6 +85,7 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 		exit(42);
 	if (fork_id == 0)
 	{
+		g_data->check_fork = 1;
 		info->hd[i].flag = heredoc_check(info, count);
 		new_exec = redirect(info, count, i);
 		ft_process_merge(info, i);
