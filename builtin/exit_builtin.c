@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 11:47:19 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 11:49:17 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int    exit_builtin(t_data *info, char *rl)
     int i;
     int status;
 
-    // printf("exit mi (%d)\n", check_exit(info));
+    printf("exit mi (%d)\n", check_exit(info));
     if (check_exit(info))
         return (0);
     i = 0;

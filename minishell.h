@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/08 11:42:53 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 11:56:07 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ void		lst_info_combining(t_data *info);
 void		two_pointer_free(char **s);
 
 // lexer/lexer.c
-void		lexer(t_data *info, char *read_line);
+int		lexer(t_data *info, char *read_line);
+int			check_read_line(char *rl);
 void		quote(t_data *info, char *read_line);
 void		quotes(t_data *info, char *read_line, int *index, int c1);
 void		no_quote(t_data *info, char *read_line, int *index);

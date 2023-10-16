@@ -3,19 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:46 by museker           #+#    #+#             */
-/*   Updated: 2023/10/07 19:53:32 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/08 11:59:41 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	lexer(t_data *info, char *read_line)
+
+int	lexer(t_data *info, char *read_line)
 {
+	if (check_read_line)
+		return (1);
 	quote(info, read_line);
 	lst_info_combining(info);
+	return (0);
+}
+
+int	check_read_line(char *rl)
+{
+	if (!*rl || check_syntax(rl) == 1)
+	{
+		free(rl);
+		return (1);
+	}
+	return (0);
 }
 
 void	quote(t_data *info, char *read_line)

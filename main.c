@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 11:33:29 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 11:59:44 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,9 @@ int	main(int argc, char *argv[], char **env_p)
 	while (1)
 	{
 		read_line = readline("\033[0;31m(Minishell)$>\033[0m ");
-		if (!*read_line || check_syntax(read_line) == 1)
-		{
-			free(read_line);
+		add_history(read_line);
+		if (lexer(info, read_line))
 			continue;
-		}
-		lexer(info, read_line);
 		if (exit_builtin(info, read_line));
 			continue;
 		exec(info);
