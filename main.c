@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 10:03:50 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 11:33:29 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@ void	set_env_p(t_data *info, char **env_p)
 	info->paths = ft_split(getenv("PATH"), ':');
 }
 
+int	free_info_and_rl(t_data *info, char *rl)
+{
+	two_pointer_free(info->cmd->commands);
+	free(info->cmd->flags);
+	free(rl);
+	return (1);
+}
+
 int	main(int argc, char *argv[], char **env_p)
 {
 	t_data		*info;
@@ -49,10 +57,10 @@ int	main(int argc, char *argv[], char **env_p)
 			continue;
 		}
 		lexer(info, read_line);
+		if (exit_builtin(info, read_line));
+			continue;
 		exec(info);
-		two_pointer_free(info->cmd->commands);
-		free(info->cmd->flags);
-		free(read_line);
+		free_info_and_rl(info, read_line);
 		ft_lstclear(&info->arg);
 	}
 	return (0);

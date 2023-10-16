@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:04:17 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/05 03:31:53 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 10:27:57 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,19 @@ int    go_next_qoute(char *r, int *i)
 {
     while (r[*i])
     {
-        if (r[*i] == '\'' && (*i)++)
+        if (r[*i] == '\'')
         {
-            while (r[*i] != '\'')
+            (*i)++;
+            while (r[*i] && r[*i] != '\'')
                 (*i)++;
             if (r[*i] == '\'' && (*i)++)
                 return (0);
             else
                 return (1);
         }
-        else if (r[*i] == '"'  && (*i)++)
+        else if (r[*i] == '"')
         {
+            (*i)++;
             while (r[*i] && r[*i] != '"')
                 (*i)++;
             if (r[*i] == '"' && (*i)++)
@@ -49,8 +51,7 @@ int    go_next_qoute(char *r, int *i)
             else
                 return (1);
         }
-        else
-            break ;
+        break ;
     }
     return (0);
 }
@@ -89,7 +90,7 @@ int    check_syntax(char *rl)
     s = ft_strtrim(rl, " ");
     l = ft_strlen(s) - 1;
     if (s[l] == '|' || s[l] == '>' || s[l] == '<'
-       || s[0] == '|' || s[0] == '>' || s[0] == '<')
+       || s[0] == '|')
         return (err_message("Syntax Error"));
     free(s);
     if (check_pipe(rl))

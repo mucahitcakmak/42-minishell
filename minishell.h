@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/06 19:10:19 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/08 11:42:53 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,21 @@ typedef struct s_data
 }	t_data;
 
 // main.c
+int			free_info_and_rl(t_data *info, char *rl);
 void		find_path_and_exec(t_data *info, char **read_line);
 int			create_fork_and_exec(t_data *info, char **read_line);
 void		set_env_p(t_data *info, char **env_p);
 
 // builtin/builtin.c
 void	builtin(t_data *info, char **s, int count);
+
+// builtin/echo_builtin.c
+int		echo_check_n(t_data *info, char **s, int c);
+void	echo_builtin(t_data *info, char **s, int c);
+
+// builtin/exit_builtin.c
+int		check_exit(t_data *info);
+int		exit_builtin(t_data *info, char *rl);
 
 // exec/exec.c
 void		exec(t_data *info);
@@ -110,6 +119,9 @@ void		quote(t_data *info, char *read_line);
 void		quotes(t_data *info, char *read_line, int *index, int c1);
 void		no_quote(t_data *info, char *read_line, int *index);
 char		*char_combining(char **s);
+
+// utils/ft_nbr.c
+int			ft_atoi(const char *nptr);
 
 // utils/lst_all.c
 t_list		*ft_lstnew(void *key, void *value);

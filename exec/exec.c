@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 09:42:08 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 11:07:56 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void exec(t_data *info)
 {
 	int	i;
 	int	count;
-	int  status = 0;
-	int wpid;
 
 	info->pipe_count = find_pipe_count(info);
 	info->process = malloc(sizeof(t_process) * (info->pipe_count + 1));
@@ -25,7 +23,6 @@ void exec(t_data *info)
 	while (++i < info->pipe_count)
 		pipe(info->process[i].fd);
 	i = -1;
-
 	count = 0;
 	while (++i < info->pipe_count + 1)
 	{
@@ -59,11 +56,12 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 		new_exec = redirect(info, count);
 		builtin(info, new_exec, count);
 		find_path_and_exec(info, new_exec);
-		exit(42);
+		printf("minishell: %s: command not found\n", new_exec[0]);
+		exit(127);
 	}
 }
 
-void	find_path_and_exec(t_data *info, char **read_line)
+void	find_path_and_exec(t_data *info, char **rl)
 {
 	int		i;
 	char	*tmp;
@@ -74,14 +72,19 @@ void	find_path_and_exec(t_data *info, char **read_line)
 	while (info->paths[++i])
 	{
 		tmp2 = ft_strjoin(info->paths[i], "/");
-		tmp = ft_strjoin(tmp2, read_line[0]);
+		tmp = ft_strjoin(tmp2, rl[0]);
 		free(tmp2);
 		if (access(tmp, F_OK) != -1)
 		{
-			execve(tmp, read_line, info->env_p);
+			execve(tmp, rl, info->env_p);
 			free(tmp);
 			exit(42);
 		}
 		free(tmp);
+	}
+	if (access(rl[0], F_OK) != -1)
+	{
+		execve(rl[0], rl, info->env_p);
+		exit(42);
 	}
 }
