@@ -15,7 +15,7 @@
 void	lexer(t_data *info, char *read_line)
 {
 	quote(info, read_line);
-	lst_combining(info);
+	lst_info_combining(info);
 	// int i =-1;
 	// char **tmp;
 	// tmp = info->cmd->commands;

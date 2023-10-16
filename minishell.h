@@ -21,6 +21,7 @@
 # include <string.h>
 
 # include <signal.h>
+# include <fcntl.h>
 
 # define Q0 0
 # define Q1 1
@@ -75,7 +76,10 @@ void		pipe_finder(t_data *info, int *count);
 void		pipe_close(t_data *info);
 
 // exec/redirect.c
-void		redirect(t_data *info, char **str, int i);
+char	**redirect(t_data *info, int count);
+
+// exec/utils.c
+char	**lst_redirect_combining(t_list *lst);
 
 // lexer/lexer_str.c
 char		*check_dollar(t_data *info, char *s);
@@ -89,7 +93,7 @@ char		*add_space(char *rd);
 int			ft_char_count(char *read_line, int c);
 char		**pipe_split(char	*s, char *str_c, char c, int p);
 void		pipe_adder(t_data *info, char *str, int *k);
-void		lst_combining(t_data *info);
+void		lst_info_combining(t_data *info);
 void		two_pointer_free(char **s);
 
 // lexer/lexer.c

@@ -115,7 +115,7 @@ void	pipe_adder(t_data *info, char *str, int *k)
 	free(split);
 }
 
-void	lst_combining(t_data *info)
+void	lst_info_combining(t_data *info)
 {
 	int		k;
 	t_list	*iter;
@@ -127,12 +127,12 @@ void	lst_combining(t_data *info)
 	info->cmd->flags = malloc(sizeof(int) * 10000);
 	while (iter)
 	{
-		if (ft_char_count(iter->value, '|') && (int)(iter->key) == Q0)
+		if (ft_char_count(iter->value, '|') && (long)(iter->key) == Q0)
 			pipe_adder(info, iter->value, &k);
 		else
 		{
 			info->cmd->commands[++k] = iter->value;
-			info->cmd->flags[k] = (int)iter->key;
+			info->cmd->flags[k] = (long)iter->key;
 		}
 		iter = iter->next;
 	}

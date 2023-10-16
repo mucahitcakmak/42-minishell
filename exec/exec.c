@@ -54,11 +54,13 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 		exit(42);
 	if (fork_id == 0)
 	{
-		new_exec = read_line_edit(info, count);
 		ft_process_merge(info, i);
-		// redirect(info, new_exec, i);
+		new_exec = redirect(info, count);
+		// int i = -1;
+		// while (new_exec[++i])
+		// 	printf("yeniiii: (%s)\n", new_exec[i]);
 		find_path_and_exec(info, new_exec);
-		printf("minishell: %s: command not found\n", read_line[0]);
+		printf("minishell: %s: command not found\n", new_exec[0]);
 		exit(42);
 	}
 }
@@ -75,11 +77,10 @@ void	find_path_and_exec(t_data *info, char **read_line)
 	{
 		tmp2 = ft_strjoin(info->paths[i], "/");
 		tmp = ft_strjoin(tmp2, read_line[0]);
-		tmp3 = ft_strtrim(tmp, " ");
 		free(tmp2);
-		if (access(tmp3, F_OK) != -1)
+		if (access(tmp, F_OK) != -1)
 		{
-			execve(tmp3, read_line, info->env_p);
+			execve(tmp, read_line, info->env_p);
 			free(tmp);
 			exit(42);
 		}
