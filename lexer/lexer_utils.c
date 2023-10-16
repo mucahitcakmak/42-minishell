@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:04:17 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/09/27 18:37:30 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/02 16:06:50 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,33 +63,75 @@ int	ft_char_count(char *read_line, int c)
 
 	i = -1;
 	count = 0;
-	while(read_line[++i])
+	while (read_line[++i])
 		if (read_line[i] == c)
 			count++;
 	return (count);
 }
 
-char	*lst_combining(t_data *info)
+char	**pipe_split(char	*s, char c, int p)
 {
-	int	i;
-	char *p;
+	int		i;
+	int		j;
+	int		temp;
+	char	**str_split;
+
+	i = 0;
+	j = 0;
+	str_split = (char **)malloc(sizeof(char *) * (count_word(s, c) + p + 1));
+	if (!str_split)
+		return (NULL);
+	while (s[i])
+	{
+		if (s[i] && s[i] == c && ++i)
+			str_split[j++] = ft_strdup("|");
+		temp = i;
+		while (s[i] && s[i] != c)
+			i++;
+		if (count_word(s, c) + p == j)
+			break ;
+		str_split[j++] = ft_substr(s, temp, i++ - temp);
+		if (count_word(s, c) + p != j)
+			str_split[j++] = ft_strdup("|");
+	}
+	str_split[j] = 0;
+	return (str_split);
+}
+
+void	pipe_adder(t_data *info, char *str, int *k)
+{
+	int		i;
+	char	**split;
+
+	i = -1;
+	split = pipe_split(str, '|', ft_char_count(str, '|'));
+	while (split[++i])
+	{
+		info->cmd->commands[++(*k)] = split[i];
+		info->cmd->flags[*k] = Q0;
+	}
+	free(split);
+}
+
+void	lst_combining(t_data *info)
+{
 	int		k;
 
 	k = -1;
-	i = -1;
-	p = malloc(10000);
+	info->cmd->commands = malloc(10000);
+	info->cmd->flags = malloc(sizeof(int) * 10000);
 	while (info->arg)
 	{
-		while (info->arg->value[++i])
+		if (ft_char_count(info->arg->value, '|') && (int)(info->arg->key) == Q0)
+			pipe_adder(info, info->arg->value, &k);
+		else
 		{
-			p[++k] = info->arg->value[i];
+			info->cmd->commands[++k] = info->arg->value;
+			info->cmd->flags[k] = (int)info->arg->key;
 		}
-		i = -1;
 		info->arg = info->arg->next;
 	}
-	p[++k] = 0;
-	printf("lst / (%s)\n", p);
-	return (p);
+	info->cmd->commands[++k] = 0;
 }
 
 void	two_pointer_free(char **s)

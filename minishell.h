@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/09/28 02:41:32 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/02 16:03:53 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,13 @@
 # include <stdlib.h>
 # include <string.h>
 
+# define Q0 0
+# define Q1 1
+# define Q2 2
+
 typedef struct s_list
 {
-	char			*key;
+	void			*key;
 	char			*value;
 	struct s_list	*next;
 }	t_list;
@@ -30,6 +34,7 @@ typedef struct s_list
 typedef struct s_commands
 {
 	char			**commands;
+	int				*flags;
 	int				fd[2];
 }	t_commands;
 
@@ -38,6 +43,7 @@ typedef struct s_data
 	char			**paths;
 	char			**env_p;
 	t_list			*env_lst;
+	t_commands		*cmd;
 	t_list			*arg;
 }	t_data;
 
@@ -69,6 +75,10 @@ char		*ft_strdup(const char *s);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			find_key(t_data *info, char *s);
+
+// utils/ft_str_3.c
+char		*ft_strtrim(char const *s1, char const *set);
+
 // lexer/lexer_str.c
 char		*check_dollar(t_data *info, char *s);
 void		*dollar_split(t_data *info, char *s, int *in);
@@ -81,10 +91,11 @@ int			pipe_ct(char *read_line);
 char		*add_space(char *rd);
 int			ft_char_count(char *read_line, int c);
 void		two_pointer_free(char **s);
-char		*lst_combining(t_data *info);
+void		lst_combining(t_data *info);
+char		**pipe_split(char	*s, char c, int p);
 
 // lexer/lexer.c
-char		**lexer(t_data *info, char *read_line);
+void		lexer(t_data *info, char *read_line);
 void		quote(t_data *info, char *read_line);
 void		quotes(t_data *info, char *read_line, int *index, int c1);
 void		no_quote(t_data *info, char *read_line, int *index);

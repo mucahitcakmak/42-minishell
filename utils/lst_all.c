@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_all.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:54 by museker           #+#    #+#             */
-/*   Updated: 2023/09/27 18:29:49 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:09:08 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_list	*ft_lstnew(void *key, void *value)
 	p = malloc(sizeof(t_list));
 	if (!p)
 		return (NULL);
-	p->key = (char *)key;
+	p->key = key;
 	p->value = (char *)value;
 	p->next = NULL;
 	return (p);

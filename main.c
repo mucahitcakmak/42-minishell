@@ -17,16 +17,18 @@ void	find_path_and_exec(t_data *info, char **read_line)
 	int		i;
 	char	*tmp;
 	char	*tmp2;
+	char	*tmp3;
 
 	i = -1;
 	while (info->paths[++i])
 	{
 		tmp2 = ft_strjoin(info->paths[i], "/");
 		tmp = ft_strjoin(tmp2, read_line[0]);
+		tmp3 = ft_strtrim(tmp, " ");
 		free(tmp2);
-		if (access(tmp, F_OK) != -1)
+		if (access(tmp3, F_OK) != -1)
 		{
-			execve(tmp, read_line, info->env_p);
+			execve(tmp3, read_line, info->env_p);
 			free(tmp);
 			exit(42);
 		}
@@ -78,21 +80,56 @@ void	set_env_p(t_data *info, char **env_p)
 int	main(int argc, char *argv[], char **env_p)
 {
 	t_data		*info;
-	char		**read_line_split;
 	char		*read_line;
 
 	info = malloc(sizeof(t_data));
+	info->cmd = malloc(sizeof(t_commands));
 	set_env_p(info, env_p);
 	while (1)
 	{
 		read_line = readline("\033[0;31m(Minishell)$>\033[0m ");
 		add_history(read_line);
-		read_line_split = lexer(info, read_line);
-		// int i = -1;
-		// while (read_line_split[++i])
-		// 	printf("(%s)\n", read_line_split[i]);
-		create_fork_and_exec(info, read_line_split);
+		lexer(info, read_line);
+		create_fork_and_exec(info, info->cmd->commands);
 		// system("leaks minishell");
 	}
 	return (0);
 }
+
+// char	**ft_cakma_split(char const *s, char c)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		temp;
+// 	char	**str;
+// 	int		abc;
+// 	i = 0;
+// 	j = 0;
+// 	str = (char **)malloc(sizeof(char *) * (count_word(s, c) + 1));
+// 	if (!str)
+// 		return (NULL);
+// 	while (s[i])
+// 	{
+// 		abc = i;
+// 		while (s[i] && s[i] == c)
+// 			i++;
+// 		while (s[i] && s[i] != c)
+// 			i++;
+// 		if (count_word(s, c) == j)
+// 			break ;
+// 		str[j++] = ft_substr(s, abc, i - abc);
+// 		abc = i;
+// 	}
+// 	str[j] = 0;
+// 	return (str);
+// }
+
+
+// int main()
+// {
+// 	int i = -1;
+// 	char **split;
+// 	split = pipe_split("echo abd|cd", '|');
+// 	while (split[++i])
+// 		printf("(%s)\n", split[i]);
+// }

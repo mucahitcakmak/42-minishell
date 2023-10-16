@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:43 by museker           #+#    #+#             */
-/*   Updated: 2023/09/28 02:36:26 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/09/28 12:47:00 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,45 +36,30 @@ char	*check_dollar(t_data *info, char *s)
 	return (km);
 }
 
-void	*dollar_split2(t_data *info, char *s, int *in, int *tmp)
-{
-	char *char1;
-	char *char_tmp;
-
-	char_tmp = ft_substr(s, tmp[0], *in - tmp[0]);
-	if (s[ft_strlen(s) - 1] != '$' && s[ft_strlen(s) - 1] != ' ' && s[ft_strlen(s) - 2] == '$')
-		char1 = ft_substr(s, tmp[1], tmp[0] - tmp[1] - 1);
-	else if (s[tmp[0] + 1] == '\0' || s[tmp[1] + 1] == '\0' || (s[*in] == '\0' && s[tmp[0] + 1] == '\0'))
-		char1 = ft_substr(s, tmp[1], tmp[0] - tmp[1]);
-	else if (find_key(info , char_tmp) || s[tmp[1] + 1] != ' ')
-		char1 = ft_substr(s, tmp[1], tmp[0] - tmp[1] - 1);
-	else
-		char1 = ft_substr(s, tmp[1], tmp[0] - tmp[1]);
-	free(char_tmp);
-	return(char1);
-}
-
 void	*dollar_split(t_data *info, char *s, int *in)
 {
-	int		tmp[2];
+	int		tmp;
+	int		tmp2;
 	char	*char_tmp;
 	char	*char1;
-	char	*char2;
 
-	tmp[1] = *in; // in = $
-	while (s[*in] && s[*in] == '$')
+	(*in)++;
+	if (s[*in] == '$' || s[*in] == ' ' || !s[*in])
+		return (ft_strdup("$"));
+	tmp = *in;
+	while (s[*in] && s[*in] != '$' && s[*in] != ' ')
 		(*in)++;
-	tmp[0] = *in;
-	while (s[*in] && (s[*in] != '$' && (s[*in] != ' ')))
-		(*in)++;
-	char1 = dollar_split2(info, s, in, tmp);
-	char_tmp = ft_substr(s, tmp[0], *in - tmp[0]);
-	char2 = replace_dollar(info, char_tmp);
-	char *char3 = ft_strjoin(char1, char2);
-	free(char_tmp);
-	free(char1);
-	free(char2);
-	return (char3);
+	tmp2 = *in;
+	char_tmp = ft_substr(s,tmp, tmp2 - tmp);
+	if (find_key(info, char_tmp))
+	{
+		char1 =	replace_dollar(info, char_tmp);
+		free(char_tmp);
+		return (char1);
+	}
+	else
+		free(char_tmp);
+	return (ft_strdup(""));
 }
 
 void	*no_dollar_split(char *s, int *in)
