@@ -6,7 +6,7 @@
 /*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/06 19:48:33 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/07 19:53:56 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void exec(t_data *info)
 	while (++i < info->pipe_count)
 		pipe(info->process[i].fd);
 	i = -1;
+
 	count = 0;
 	while (++i < info->pipe_count + 1)
 	{
@@ -34,6 +35,9 @@ void exec(t_data *info)
 	i = -1;
 	pipe_close(info);
 	while (waitpid(-1, NULL, 0) > 0);
+	// printle anladım ama fork kapanmıyorsa buraya gelmez sorun
+	// forkun kapanıyor olması lazım hayır buldum kapanmıyorexecute da sorun var
+	// anasını avradını
 }
 
 int	exec_command(t_data *info, char **read_line, int count, int i)
@@ -56,9 +60,8 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 	{
 		ft_process_merge(info, i);
 		new_exec = redirect(info, count);
-		builtin(info, new_exec, count);
+		// builtin(info, new_exec, count);
 		find_path_and_exec(info, new_exec);
-		printf("minishell: %s: command not found\n", new_exec[0]);
 		exit(42);
 	}
 }

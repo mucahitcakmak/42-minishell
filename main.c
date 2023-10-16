@@ -6,7 +6,7 @@
 /*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/06 19:10:02 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/07 19:55:25 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char *argv[], char **env_p)
 		two_pointer_free(info->cmd->commands);
 		free(info->cmd->flags);
 		free(read_line);
-		ft_lstclear(&info->arg);
+		ft_lstclear(&info->arg); // PATLADI NOLDU
 	}
 	return (0);
 }

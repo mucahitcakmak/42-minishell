@@ -6,7 +6,7 @@
 /*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/06 19:57:36 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/07 19:50:28 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*rd_last_str(t_list	*lst)
 
 	red = lst;
 	lst = lst->next;
-	if (lst->value[0] == ' ')
+	if (lst->value[0] == ' ' && lst->key == Q0)
 		lst = lst->next;
 	if (!lst->value[0])
 		lst = lst->next;
@@ -124,25 +124,23 @@ void	overwrite_input(t_data *info, t_list	*lst)
 
 void	append_input(t_data *info, t_list	*lst)
 {
-	t_list	*heredoclst;
 	char	*s;
 	char	*rd;
+	int		fd;
+	static int counter = 0;
 
-	heredoclst = NULL;
+	counter++;
 	s = rd_last_str(lst);
+	fd = open(s, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (counter == 2)
+		dup2(fd,1);
 	while (1)
 	{
 		rd = readline("> ");
 		if (!ft_strcmp(rd, s))
-			break;
-		ft_lstadd_back(&heredoclst, ft_lstnew(0, rd));
+			break; 
 	}
-	while (heredoclst)
-	{
-		printf("%s\n", heredoclst->value);
-		heredoclst = heredoclst->next;
-	}
-	// burada dup2 yapmam lazım yada inputu durdurmam lazım
+	close(fd);
 	pipe_close(info);
 	return ;
 }
@@ -205,9 +203,32 @@ char	**redirect(t_data *info, int count)
 	char	**str;
 
 	lst = NULL;
+
 	lst_add_redirect(info, &lst, count);
-	lst_run_redirect(info, &lst);
-	str = ft_abc(info, lst_redirect_combining(lst), count);
+	// lst_run_redirect(info, &lst);
+
+	str = lst_redirect_combining(lst);
 	return (str);
 }
  
+// ech"o" <<merhaba >> arkadalasr > b"e"n 'muco'
+// lst: (ech)
+// lst: (o)
+// lst: ( )
+// lst: ()
+// lst: (<<)
+// lst: (merhaba )
+// lst: ()
+// lst: ()
+// lst: (>>)
+// lst: ( )
+// lst: ()
+// lst: (arkadalasr )
+// lst: ()
+// lst: (>)
+// lst: ( )
+// lst: ()
+// lst: (b)
+// lst: (e)
+// lst: (n )
+// lst: (muco)
