@@ -3,93 +3,117 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:46 by museker           #+#    #+#             */
-/*   Updated: 2023/09/19 15:17:47 by museker          ###   ########.fr       */
+/*   Updated: 2023/09/27 19:13:37 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	pipe_ct(char *read_line)
+char	**lexer(t_data *info, char *read_line)
 {
-	int	i;
-	int	count;
+	char *tmp;
+	char *new;
+	char **split;
 
-	count = 0;
-	i = 0;
-	while (read_line[i])
+	quote(info, read_line);
+	tmp = lst_combining(info);
+	// new = add_space(tmp);
+	// free(tmp);
+	split = ft_split(tmp, ' ');
+	return (split);
+}
+
+void	quote(t_data *info, char *read_line)
+{
+    int	i;
+
+    i = 0;
+	info->arg = NULL;
+    while (read_line[i])
 	{
-		if (read_line[i] == '|')
-			count++;
-		i++;
+		if (read_line[i] == 39)
+			quotes(info, read_line, &i, 39);
+		else if (read_line[i] == 34)
+			quotes(info, read_line, &i, 34);
+		else if (read_line[i] != 34 || read_line[i] != 39)
+			no_quote(info, read_line, &i);
 	}
-	return (count * 2);
 }
 
-void	free_lexer(char *read_line, char **read_line_split)
+void	quotes(t_data *info, char *read_line, int *index, int c1)
 {
 	int	i;
+	int	start;
+	char *new_line;
+	char *maybe;
+	int	end;
+	t_list *tmplst;
 
-	i = -1;
-	while (read_line_split[++i])
-		free(read_line_split[i]);
-	free(read_line_split);
-	free(read_line);
+	start = ++(*index);
+	while (read_line[*index])
+	{
+		if (read_line[*index] == c1)
+		{
+			end = (*index)++;
+			break;
+		}
+		(*index)++;
+	}
+	new_line = ft_substr(read_line, start, end - start);
+	if (c1 == '"' && ft_char_count(new_line, '$'))
+		ft_lstadd_back(&(info->arg), ft_lstnew(0, check_dollar(info, new_line)));
+	else
+		ft_lstadd_back(&(info->arg), ft_lstnew(0, new_line));
 }
 
-int	ft_char_count(char *read_line, int c)
+void	no_quote(t_data *info, char *read_line, int *index)
 {
 	int	i;
-	int	count;
+	int	start;
+	char *new_line;
+	int	end;
+	t_list	*tmplst;
 
-	i = -1;
-	count = 0;
-	while(read_line[++i])
-		if (read_line[i] == c)
-			count++;
-	return (count);
+	start = *index;
+	while (read_line[*index])
+	{
+		if (read_line[*index] == '\'' || read_line[*index] == '"')
+		{
+			end = *index;
+			break;
+		}
+		(*index)++;
+	}
+	if (read_line[*index] == '\0' && !(read_line[*index - 1] == '\'' || read_line[*index - 1] == '"'))
+		end = *index;
+	new_line = ft_substr(read_line, start, end - start);
+	ft_lstadd_back(&(info->arg), ft_lstnew(0, check_dollar(info, new_line)));
 }
 
-char	*ft_remove_quotes(char *read_line)
+char	*char_combining(char **s)
 {
 	int		i;
+	char	*p;
+	int		count;
 	int		j;
-	char	*s;
+	int		k;
 
-	if (ft_char_count(read_line, 34) % 2 == 1 
-			|| ft_char_count(read_line, 39) % 2 == 1)
-		return (NULL);
 	i = -1;
-	j = -1;
-	s = malloc(sizeof(char) * (ft_strlen(read_line) - 
-			ft_char_count(read_line, 34) - ft_char_count(read_line, 39) + 1)); // 
-	while(read_line[++i])
+	k = -1;
+	count = 0;
+	while (s[++i])
+		count += ft_strlen(s[i]);
+	i = -1;
+	p = malloc(count + 1);
+	while (s[++i])
 	{
-		if (read_line[i] == 34 || read_line[i] == 39)
-			continue;
-		s[++j] = read_line[i];
+		j = -1;
+		while (s[i][++j])
+			p[++k] = s[i][j];
 	}
-	s[++j] = 0;
-	return (s);
-}
-
-char	**lexer(char *read_line)
-{
-	char	*removed_quotes;
-	char	*new_line;
-	char	**read_line_split;
-
-	removed_quotes = ft_remove_quotes(read_line);
-	if (removed_quotes == NULL)
-		new_line = add_space(read_line);
-	else
-	{
-		new_line = add_space(removed_quotes);
-		free(removed_quotes);
-	}
-	read_line_split = ft_split(new_line, " ");
-	free(new_line);
-	return (read_line_split);
+	p[++k] = 0;
+	return (p);
 }
