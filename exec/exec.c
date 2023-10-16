@@ -6,7 +6,7 @@
 /*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/06 17:12:26 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/06 19:48:33 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void exec(t_data *info)
 	i = -1;
 	count = 0;
 	while (++i < info->pipe_count + 1)
-	{	
+	{
 		exec_command(info, info->cmd->commands + count, count, i);
 		pipe_finder(info, &count);
 	}

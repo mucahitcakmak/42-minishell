@@ -6,7 +6,7 @@
 /*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/06 17:25:57 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/06 19:57:36 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,8 @@ t_list	*go_redirect(t_list *lst)
 	return (lst);
 }
 
-
-void	output_redirection(t_data *info, t_list	*lst)
+char	*rd_last_str(t_list	*lst)
 {
-	int		fd;
-	int		end;
 	char	*s;
 	t_list	*red;
 
@@ -82,11 +79,70 @@ void	output_redirection(t_data *info, t_list	*lst)
 	else
 		s = ft_strdup(lst->value);
 	free(lst->value);
-	free(red);
+	free(red->value);
 	lst->value = ft_strdup("");
 	red->value = ft_strdup("");
+	return (s);
+}
+
+
+void	overwrite_output(t_data *info, t_list	*lst)
+{
+	int		fd;
+	char	*s;
+
+	s = rd_last_str(lst);
 	fd = open(s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
  	dup2(fd, 1);
+	close(fd);
+	return ;
+}
+
+void	append_output(t_data *info, t_list	*lst)
+{
+	int		fd;
+	char	*s;
+
+	s = rd_last_str(lst);
+	fd = open(s, O_WRONLY | O_CREAT | O_APPEND, 0644);
+ 	dup2(fd, 1);
+	close(fd);
+	return ;
+}
+
+void	overwrite_input(t_data *info, t_list	*lst)
+{
+	int		fd;
+	char	*s;
+
+	s = rd_last_str(lst);
+	fd = open(s, O_RDONLY, 0644);
+ 	dup2(fd, 0);
+	close(fd);
+	return ;
+}
+
+void	append_input(t_data *info, t_list	*lst)
+{
+	int		fd;
+	char	*s;
+	char	*rd;
+	int		fd1[2];
+
+	s = rd_last_str(lst);
+	fd = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	while (1)
+	{
+		rd = readline("> ");
+		if (!ft_strcmp(rd,s))
+			break;
+		ft_putstr_fd(rd, fd);
+		ft_putstr_fd("\n", fd);
+	}
+	dup2(fd, 1);
+	close(info->process[0].fd[1]);
+	dup2(info->process[0].fd[0],0);
+	close(info->process[0].fd[0]);
 	close(fd);
 	return ;
 }
@@ -100,7 +156,13 @@ void	lst_run_redirect(t_data *info, t_list **lst)
 	{
 		tmp = go_redirect(tmp);
 		if (tmp && tmp->next && ft_char_count(tmp->value, '>') == 1)
-			output_redirection(info, tmp);
+			overwrite_output(info, tmp);
+		else if (tmp && tmp->next && ft_char_count(tmp->value, '>') == 2)
+			append_output(info, tmp);
+		else if (tmp && tmp->next && ft_char_count(tmp->value, '<') == 1)
+			overwrite_input(info, tmp);
+		else if (tmp && tmp->next && ft_char_count(tmp->value, '<') == 2)
+			append_input(info, tmp);
 		if (tmp)
 			tmp = tmp->next;
 	}
@@ -119,13 +181,14 @@ char	**ft_abc(t_data *info, char **s, int count)
 	k = 0;
 	while (s[++i])
 	{
-		if (!s[i][0] || s[i][0] == ' ')
-			continue;
+		if (!s[i][0] ||
+			(s[i][0] == ' ' && info->cmd->flags[count + i] == Q0))
+			continue ;
 		if (!ft_strchr(s[i], ' '))
 			p[k++] = ft_strdup(s[i]);
 		else
 		{
-			if (info->cmd->flags[count+i] == Q1)
+			if (info->cmd->flags[count + i] == Q1)
 				p[k++] = ft_strdup(s[i]);
 			else
 				p[k++] = ft_substr(s[i], 0, ft_find_index(s[i], ' '));

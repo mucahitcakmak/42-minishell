@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/05 03:43:50 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/06 19:10:19 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,6 @@ int			find_key(t_data *info, char *s);
 
 // utils/ft_str_3.c
 char		*ft_strtrim(char const *s1, char const *set);
+void		ft_putstr_fd(char *s, int fd);
 
 #endif
