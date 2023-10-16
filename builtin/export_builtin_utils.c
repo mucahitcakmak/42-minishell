@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:09:37 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/12 02:44:28 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:24:07 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ void	export_is_path(t_data *info, char *s, char *p)
 
 int	check_valid(char *s, int i)
 {
+	if (ft_char_count(s, ' '))
+	{
+		printf("minishell: ' ' is not a valid identifier\n");
+		if (i)
+			free(s);
+		return (1);
+	}
 	if (ft_char_count(s, '?'))
 	{
 		printf("minishell: '?' is not a valid identifier\n");
@@ -49,8 +56,8 @@ void	change_export(t_data *info, char *s)
 		tmp = ft_substr(s, 0, find_i(s, '='));
 		tmp2 = ft_substr(s, find_i(s, '=') + 1, ft_strlen(s)
 				- find_i(s, '=') + 1);
-		export_control_and_change(info->export_lst, tmp, tmp2, 1);
 		export_is_path(info, tmp, tmp2);
+		export_control_and_change(info->export_lst, tmp, tmp2, 1);
 	}
 	else
 	{

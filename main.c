@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/12 02:00:59 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/12 15:28:14 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	set_env_p(t_data *info, char **env_p)
 {
 	int		i;
 	char	**temp;
+	char	*tmp;
 	t_list	*tmplst_1;
 	t_list	*tmplst_2;
 
@@ -68,7 +69,11 @@ void	set_env_p(t_data *info, char **env_p)
 		two_pointer_free(temp);
 	}
 	info->env_p = env_p;
-	info->paths = ft_split(getenv("PATH"), ':');
+	tmp = getenv("PATH");
+	if (tmp)
+		info->paths = ft_split(tmp, ':');
+	else
+		info->paths = ft_split(" ", ' ');
 }
 
 int	free_info_and_rl(t_data *info, char *rl)

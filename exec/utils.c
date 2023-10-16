@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/12 02:55:40 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:18:43 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	**lst_redirect_combining(t_list *lst)
 	char	*t;
 
 	k = -1;
-	str = malloc(sizeof(char *) * ft_lstsize(lst) + 1);
+	str = malloc(sizeof(char *) * (ft_lstsize(lst) + 1));
 	while (lst)
 	{
 		if (!lst->value[0])

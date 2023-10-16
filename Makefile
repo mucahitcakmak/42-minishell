@@ -35,5 +35,3 @@ clean:
 re: fclean all
 
 .PHONY: all fclean clean re
-
-# gcc -lreadline -g -fsanitize=address builtin/*.c lexer/*.c utils/*.c exec/exec.c main.c
