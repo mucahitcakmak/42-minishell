@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:04:17 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/05 03:31:53 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/09 19:39:15 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,16 +115,31 @@ void	pipe_adder(t_data *info, char *str, int *k)
 	free(split);
 }
 
+int	char_count_lst(t_list *lst, char c)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		count += ft_char_count(lst->value, c);
+		lst = lst->next;
+	}
+	return (count);
+}
+
 void	lst_info_combining(t_data *info)
 {
+	int		size;
 	int		k;
 	t_list	*iter;
 
 	k = -1;
 	iter = NULL;
 	iter = info->arg;
-	info->cmd->commands = malloc(10000);
-	info->cmd->flags = malloc(sizeof(int) * 10000);
+	size = ft_lstsize(iter) + char_count_lst(info->arg, ' ') + 1;
+	info->cmd->commands = malloc(sizeof(char *) * size);
+	info->cmd->flags = malloc(sizeof(int) * size);
 	while (iter)
 	{
 		if (ft_char_count(iter->value, '|') && (long)(iter->key) == Q0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 10:03:44 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 18:11:35 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,26 @@ t_list	*new_lst(t_list *lst)
 	return (lst);
 }
 
+int	get_str_size(t_list *lst)
+{
+	int		i;
+	int		j;
+	int		tmp;
+	
+	i = -1;
+	while (lst)
+	{
+		j = -1;
+		tmp = get_index(lst->value, ' ', (long)lst->key);
+		while (lst->value[++j] && j < tmp)
+			i++;
+		if (lst->value[j] == ' ' && lst->key == Q0)
+			break ;
+		lst = lst->next;
+	}
+	return (i + 3);
+}
+
 char	*get_str(t_list *lst)
 {
 	int		i;
@@ -51,7 +71,7 @@ char	*get_str(t_list *lst)
 	char	*s;
 
 	i = -1;
-	s = malloc(10000);
+	s = malloc(get_str_size(lst));
 	while (lst)
 	{
 		j = -1;
@@ -74,7 +94,7 @@ char	**lst_redirect_combining(t_list *lst)
 	t_list	*tmp;
 
 	k = -1;
-	str = malloc(sizeof(char *) * 100000);
+	str = malloc(sizeof(char *) * ft_lstsize(lst) + 1);
 	while (lst)
 	{
 		if (!lst->value[0])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 11:07:56 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/09 18:15:00 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 		exit(42);
 	if (fork_id == 0)
 	{
-		ft_process_merge(info, i);
 		new_exec = redirect(info, count);
-		builtin(info, new_exec, count);
+		ft_process_merge(info, i);
+		child_builtin(info, new_exec, count);
 		find_path_and_exec(info, new_exec);
 		printf("minishell: %s: command not found\n", new_exec[0]);
 		exit(127);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:46 by museker           #+#    #+#             */
-/*   Updated: 2023/10/08 11:59:41 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/08 16:16:07 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	lexer(t_data *info, char *read_line)
 {
-	if (check_read_line)
+	if (check_read_line(read_line))
 		return (1);
 	quote(info, read_line);
 	lst_info_combining(info);

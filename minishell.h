@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/08 11:56:07 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 01:02:49 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-
 # include <signal.h>
 # include <fcntl.h>
 
@@ -57,6 +56,8 @@ typedef struct s_data
 	t_process		*process;
 }	t_data;
 
+t_data	*g_data;
+
 // main.c
 int			free_info_and_rl(t_data *info, char *rl);
 void		find_path_and_exec(t_data *info, char **read_line);
@@ -64,15 +65,23 @@ int			create_fork_and_exec(t_data *info, char **read_line);
 void		set_env_p(t_data *info, char **env_p);
 
 // builtin/builtin.c
-void	builtin(t_data *info, char **s, int count);
+int 		check_builtin_str(t_data *info, char *str);
+int 		main_builtin(t_data *info, char *rl);
+void		child_builtin(t_data *info, char **s, int count);
 
 // builtin/echo_builtin.c
-int		echo_check_n(t_data *info, char **s, int c);
-void	echo_builtin(t_data *info, char **s, int c);
+int    		echo_check_n(t_data *info, char **s, int c);
+void    	echo_builtin(t_data *info, char **s, int c);
 
 // builtin/exit_builtin.c
-int		check_exit(t_data *info);
-int		exit_builtin(t_data *info, char *rl);
+int    exit_builtin(t_data *info, char *rl);
+
+// builtin/export_builtin.c
+int			add_export(t_data *info, char *rl);
+void		env_builtin(t_data *info);
+int			export_control_and_change(t_data *info, char *s, char *p);
+void		export_builtin(t_data *info);
+int			export_syntax(t_data *info);
 
 // exec/exec.c
 void		exec(t_data *info);
@@ -138,7 +147,7 @@ char		**ft_split(char const *s, char c);
 
 // utils/ft_str_1.c
 size_t		ft_strlen(const char *str);
-int			ft_find_index(char *s, char c);
+int			find_i(char *s, char c);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_before_c(char *s, char c);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
@@ -152,5 +161,9 @@ int			find_key(t_data *info, char *s);
 // utils/ft_str_3.c
 char		*ft_strtrim(char const *s1, char const *set);
 void		ft_putstr_fd(char *s, int fd);
+
+
+void	signal_handler(int signal);
+void	ft_putchar_fd(char c, int fd);
 
 #endif
