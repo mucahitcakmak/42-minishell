@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/09 22:12:34 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 01:38:01 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ void    echo_builtin(t_data *info, char **s, int c)
     int flag;
 
     i = 1;
+	if (!s[1])
+	{
+		printf("\n");
+		exit(0);
+	}
     flag = echo_check_n(info, s, c);
     if (flag == 1)
         i++;

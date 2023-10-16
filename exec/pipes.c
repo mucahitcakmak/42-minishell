@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/05 03:43:41 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:07:12 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_process_merge(t_data *info, int i)
 {
 	if (i == 0)
-		dup2(info->process[0].fd[1], 1);
+		dup2(info->process[0].fd[0], 0);
 	else if (i == info->pipe_count)
 		dup2(info->process[i - 1].fd[0], 0);
 	else

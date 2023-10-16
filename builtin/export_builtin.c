@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/10 01:01:55 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 09:04:44 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void    export_builtin(t_data *info)
 {
-    t_list  *envlst;
+    t_list  *exlst;
 
-    envlst = info->env_lst;
-    while (envlst)
+    exlst = info->export_lst;
+    while (exlst)
     {
         printf("declare -x ");
-        printf("%s=\"%s\"\n", envlst->key, envlst->value);
-        envlst = envlst->next;
+        printf("%s=\"%s\"\n", exlst->key, exlst->value);
+        exlst = exlst->next;
     }
     exit(0);
 }
@@ -36,10 +36,14 @@ void	change_export(t_data *info, char *s)
 		tmp = ft_substr(s, 0, find_i(s, '='));
 		tmp2 = ft_substr(s, find_i(s, '=') + 1, 
 			ft_strlen(s) - find_i(s, '=') + 1);
-		export_control_and_change(info, tmp, tmp2);
+		export_control_and_change(info->env_lst, tmp, tmp2, 1);
+		tmp = ft_substr(s, 0, find_i(s, '='));
+		tmp2 = ft_substr(s, find_i(s, '=') + 1, 
+			ft_strlen(s) - find_i(s, '=') + 1);
+		export_control_and_change(info->export_lst, tmp, tmp2, 1);
 	}
 	else
-		export_control_and_change(info, s, ft_strdup(""));
+		export_control_and_change(info->export_lst, s, ft_strdup(""), 0);
 }
 
 int	export_syntax(t_data *info)
@@ -53,6 +57,9 @@ int	export_syntax(t_data *info)
 	while (info->cmd->commands[++i])
 		ft_lstadd_back(&tlst, ft_lstnew((void *)(long)info->cmd->flags[i], info->cmd->commands[i]));
 	s = lst_redirect_combining(tlst);
+	i = -1;
+		while (s[++i])
+			printf("gelen: (%s)\n", s[i]);
 	i = -1;
 	while (s[++i])
 		if (ft_char_count(s[i], '='))
@@ -78,24 +85,26 @@ void    env_builtin(t_data *info)
     exit(0);
 }
 
-int	export_control_and_change(t_data *info, char *s, char *p)
+int	export_control_and_change(t_list *info, char *s, char *p, int i)
 {
-	int		i;
 	int		j;
 	t_list *tmp;
 
-	tmp = info->env_lst;
+	tmp = info;
 	while (tmp)
 	{
 		if (!ft_strcmp((const char *)tmp->key, s))
 		{
-			free(tmp->value);
-			tmp->value = ft_strdup(p);
+			if (i)
+			{
+				free(tmp->value);
+				tmp->value = ft_strdup(p);
+			}
 			return (0);
 		}
 		tmp = tmp->next;
 	}
-	ft_lstadd_back(&info->env_lst, ft_lstnew(s, p));
+	ft_lstadd_back(&info, ft_lstnew(s, p));
 	return (1);
 }
 
@@ -105,7 +114,7 @@ int    add_export(t_data *info, char *rl)
 	t_list	*tmp;
 
 	tmp = info->env_lst;
-    if (!check_builtin_str(info, "export\0") && info->cmd->commands[1])
+    if (!check_builtin_str(info, "export") && info->cmd->commands[1])
 	{
 		export_syntax(info);
         free_info_and_rl(info, rl);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/09 16:43:42 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/10 01:19:20 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,8 +143,7 @@ void	append_input(t_data *info, t_list	*lst)
 		ft_putstr_fd(rd, info->process->fd[1]);
 		ft_putchar_fd('\n', info->process->fd[1]);
 	}
-	// write(1, "sdf", 1);
-	pipe_close(info);
+	close(info->process->fd[1]);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/10 01:02:49 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 08:59:43 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_data
 	char			**env_p;
 	int				pipe_count;
 	t_list			*env_lst;
+	t_list			*export_lst;
 	t_commands		*cmd;
 	t_list			*arg;
 	t_process		*process;
@@ -79,7 +80,7 @@ int    exit_builtin(t_data *info, char *rl);
 // builtin/export_builtin.c
 int			add_export(t_data *info, char *rl);
 void		env_builtin(t_data *info);
-int			export_control_and_change(t_data *info, char *s, char *p);
+int			export_control_and_change(t_list *info, char *s, char *p, int i);
 void		export_builtin(t_data *info);
 int			export_syntax(t_data *info);
 
@@ -123,7 +124,7 @@ void		lst_info_combining(t_data *info);
 void		two_pointer_free(char **s);
 
 // lexer/lexer.c
-int		lexer(t_data *info, char *read_line);
+int			lexer(t_data *info, char *read_line);
 int			check_read_line(char *rl);
 void		quote(t_data *info, char *read_line);
 void		quotes(t_data *info, char *read_line, int *index, int c1);

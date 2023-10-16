@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/09 22:40:22 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 08:08:46 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int main_builtin(t_data *info, char *rl)
 
 void	child_builtin(t_data *info, char **s, int count)
 {
-    if (!ft_strcmp(s[0], "echo\0"))
+    if (!ft_strcmp(s[0], "echo"))
         echo_builtin(info, s, count);
-    else if (!ft_strcmp(s[0], "export\0"))
+    else if (!ft_strcmp(s[0], "export"))
         export_builtin(info);
-	else if (!ft_strcmp(s[0], "env\0"))
+	else if (!ft_strcmp(s[0], "env"))
 		env_builtin(info);
 }

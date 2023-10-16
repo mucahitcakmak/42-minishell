@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/09 22:12:24 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 08:11:01 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	set_env_p(t_data *info, char **env_p)
 	int		i;
 	char	**temp;
 	t_list	*tmplst_1;
+	t_list	*tmplst_2;
 
 	i = -1;
 	while (env_p[++i])
@@ -24,6 +25,8 @@ void	set_env_p(t_data *info, char **env_p)
 		temp = ft_split(env_p[i], '=');
 		tmplst_1 = ft_lstnew(temp[0], temp[1]);
 		ft_lstadd_back(&(info->env_lst), tmplst_1);
+		tmplst_2 = ft_lstnew(temp[0], temp[1]);
+		ft_lstadd_back(&(info->export_lst), tmplst_2);
 		free(temp);
 	}
 	info->env_p = env_p;
