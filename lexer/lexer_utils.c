@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:04:17 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/04 22:31:14 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/05 03:31:53 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_char_count(char *read_line, int c)
 	return (count);
 }
 
-char	**pipe_split(char	*s, char c, int p)
+char	**pipe_split(char	*s, char *str_c, char c, int p)
 {
 	int		i;
 	int		j;
@@ -84,7 +84,7 @@ char	**pipe_split(char	*s, char c, int p)
 	while (s[i])
 	{
 		if (s[i] && s[i] == c && ++i)
-			str_split[j++] = ft_strdup("|");
+			str_split[j++] = ft_strdup(str_c);
 		temp = i;
 		while (s[i] && s[i] != c)
 			i++;
@@ -94,7 +94,7 @@ char	**pipe_split(char	*s, char c, int p)
 		if (s[i])
 			i++;
 		if (count_word(s, c) + p != j)
-			str_split[j++] = ft_strdup("|");
+			str_split[j++] = ft_strdup(str_c);
 	}
 	str_split[j] = 0;
 	return (str_split);
@@ -106,7 +106,7 @@ void	pipe_adder(t_data *info, char *str, int *k)
 	char	**split;
 
 	i = -1;
-	split = pipe_split(str, '|', ft_char_count(str, '|'));
+	split = pipe_split(str, "|", '|',ft_char_count(str, '|'));
 	while (split[++i])
 	{
 		info->cmd->commands[++(*k)] = split[i];

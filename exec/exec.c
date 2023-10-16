@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/04 21:43:23 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/05 03:43:57 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 	{
 		new_exec = read_line_edit(info, count);
 		ft_process_merge(info, i);
+		// redirect(info, new_exec, i);
 		find_path_and_exec(info, new_exec);
 		printf("minishell: %s: command not found\n", read_line[0]);
 		exit(42);

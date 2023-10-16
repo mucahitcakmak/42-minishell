@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/04 20:24:39 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/05 03:43:41 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ void	pipe_finder(t_data *info, int *count)
 	if (info->cmd->commands[*count]
 		&& info->cmd->commands[*count][0] == ' '
 		&& info->cmd->flags[*count] == Q0)
-	{
 		++(*count);
-	}
 }
 
 void	pipe_close(t_data *info)
