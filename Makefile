@@ -1,4 +1,4 @@
-SRCS = main.c utils/lst_all.c utils/ft_split.c utils/ft_str.c
+SRCS = main.c utils/lst_all.c utils/ft_split.c utils/ft_str.c lexer/lexer.c
 OBJS = $(SRCS:.c=.o)
 CC = @gcc
 

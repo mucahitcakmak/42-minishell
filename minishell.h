@@ -6,7 +6,7 @@
 /*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/09/19 01:15:11 by museker          ###   ########.fr       */
+/*   Updated: 2023/09/19 15:19:04 by museker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,16 @@ typedef struct s_data
 	char			**arguments;
 	char			**paths;
 	t_list			*env_lst;
-}	t_data; 
+}	t_data;
 
-void	lexer(t_data *info, char *read_line, char **env_p);
+// lexer/lexer.c
+char		**lexer(char *read_line);
+void		*add_space(char *read_line);
+void		free_lexer(char *read_line, char **read_line_split);
+
+// main.c
+void		find_path_and_exec(t_data *info, char **read_line, char **env_p);
+int			create_fork_and_exec(t_data *info, char **read_line, char **env_p);
 
 // utils/lst_all.c
 t_list		*ft_lstnew(void *key, void *value);
@@ -50,8 +57,9 @@ void		ft_lstadd_front(t_list **lst, t_list *new);
 void		ft_lstadd_back(t_list **lst, t_list *new);
 
 // utils/ft_split.c
-size_t		count_word(const char *p, char c);
-char		**ft_split(char const *s, char c);
+char		*ft_strchr(const char *s, int c);
+size_t		count_word(const char *p, const char *delim);
+char		**ft_split(const char *s, const char *delim);
 
 // utils/ft_str.c
 
