@@ -43,12 +43,11 @@ int	main(int argc, char *argv[], char **env_p)
 	while (1)
 	{
 		read_line = readline("\033[0;31m(Minishell)$>\033[0m ");
-		if (!*read_line)
+		if (!*read_line || check_syntax(read_line) == 1)
 		{
 			free(read_line);
 			continue;
 		}
-		add_history(read_line);
 		lexer(info, read_line);
 		exec(info);
 		two_pointer_free(info->cmd->commands);

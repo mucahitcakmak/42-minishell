@@ -124,26 +124,26 @@ void	overwrite_input(t_data *info, t_list	*lst)
 
 void	append_input(t_data *info, t_list	*lst)
 {
-	int		fd;
+	t_list	*heredoclst;
 	char	*s;
 	char	*rd;
-	int		fd1[2];
 
+	heredoclst = NULL;
 	s = rd_last_str(lst);
-	fd = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (1)
 	{
 		rd = readline("> ");
-		if (!ft_strcmp(rd,s))
+		if (!ft_strcmp(rd, s))
 			break;
-		ft_putstr_fd(rd, fd);
-		ft_putstr_fd("\n", fd);
+		ft_lstadd_back(&heredoclst, ft_lstnew(0, rd));
 	}
-	dup2(fd, 1);
-	close(info->process[0].fd[1]);
-	dup2(info->process[0].fd[0],0);
-	close(info->process[0].fd[0]);
-	close(fd);
+	while (heredoclst)
+	{
+		printf("%s\n", heredoclst->value);
+		heredoclst = heredoclst->next;
+	}
+	// burada dup2 yapmam lazım yada inputu durdurmam lazım
+	pipe_close(info);
 	return ;
 }
 

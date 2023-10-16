@@ -81,6 +81,11 @@ char	**redirect(t_data *info, int count);
 // exec/utils.c
 char	**lst_redirect_combining(t_list *lst);
 
+// lexer/check_syntax.c
+int    err_message(char *msg);
+int    check_pipe(char *rl);
+int    check_syntax(char *rl);
+
 // lexer/lexer_str.c
 char		*check_dollar(t_data *info, char *s);
 void		*dollar_split(t_data *info, char *s, int *in);
