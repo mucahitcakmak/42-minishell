@@ -84,5 +84,7 @@ int	find_key(t_data *info, char *s)
 			return (1);
 		temp = temp->next;
 	}
+	if (!ft_strcmp(s, "?"))
+		return (1);
 	return (0);
 }

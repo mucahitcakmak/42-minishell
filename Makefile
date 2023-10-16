@@ -2,7 +2,7 @@ SRCS = main.c utils/lst_all.c utils/ft_split.c lexer/lexer.c \
 		utils/ft_str_1.c utils/ft_str_2.c lexer/lexer_utils.c lexer/lexer_str.c \
 		utils/ft_str_3.c exec/exec.c exec/pipes.c exec/redirect.c exec/utils.c \
 		lexer/check_syntax.c builtin/builtin.c utils/ft_nbr.c builtin/exit_builtin.c \
-		builtin/echo_builtin.c builtin/export_builtin.c
+		builtin/echo_builtin.c builtin/export_builtin.c builtin/cd_builtin.c builtin/unset_builtin.c
 OBJS = $(SRCS:.c=.o)
 CC = @gcc
 

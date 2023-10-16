@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/10 08:08:46 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:14:50 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,22 @@ int check_builtin_str(t_data *info, char *str)
     return (1);
 }
 
+int	pwd_builtin(t_data *info)
+{
+	printf("%s\n", getcwd(NULL, 0));
+	info->exit_code = 124;
+	exit(0);
+}
+
 int main_builtin(t_data *info, char *rl)
 {
     if (add_export(info, rl))
         return (1);
 	if (exit_builtin(info, rl))
+		return (1);
+	if (cd_builtin(info, rl))
+		return (1);
+	if (unset_builtin(info, rl))
 		return (1);
     return (0);
 }
@@ -49,4 +60,6 @@ void	child_builtin(t_data *info, char **s, int count)
         export_builtin(info);
 	else if (!ft_strcmp(s[0], "env"))
 		env_builtin(info);
+	else if (!ft_strcmp(s[0], "pwd"))
+		pwd_builtin(info);
 }

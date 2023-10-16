@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/09 18:34:12 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/10 19:06:21 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,16 @@ int    exit_builtin(t_data *info, char *rl)
     {
         printf("Too many arguments\n");
         free_info_and_rl(info, rl);
+		info->exit_code = 1;
         return (1);
     }
     printf("exit\n");
     if (i == 2)
     {
         status = ft_atoi(info->cmd->commands[1]);
+		info->exit_code = status;
         exit(status);
     }
+	info->exit_code = 0;
     exit(127);
 }

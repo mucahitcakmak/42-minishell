@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/10 09:06:55 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:47:53 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void exec(t_data *info)
 	}
 	i = -1;
 	pipe_close(info);
-	while (waitpid(-1, NULL, 0) > 0);
+	while (waitpid(-1, &info->exit_code, 0) > 0);
 }
 
 int	exec_command(t_data *info, char **read_line, int count, int i)
@@ -52,11 +52,12 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 		exit(42);
 	if (fork_id == 0)
 	{
-		new_exec = redirect(info, count);
 		ft_process_merge(info, i);
+		new_exec = redirect(info, count);
 		child_builtin(info, new_exec, count);
 		find_path_and_exec(info, new_exec);
 		printf("minishell: %s: command not found\n", new_exec[0]);
+		info->exit_code = 127;
 		exit(127);
 	}
 }
@@ -78,13 +79,11 @@ void	find_path_and_exec(t_data *info, char **rl)
 		{
 			execve(tmp, rl, info->env_p);
 			free(tmp);
-			exit(42);
 		}
 		free(tmp);
 	}
 	if (access(rl[0], F_OK) != -1)
 	{
 		execve(rl[0], rl, info->env_p);
-		exit(42);
 	}
 }

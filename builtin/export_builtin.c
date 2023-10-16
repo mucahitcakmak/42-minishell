@@ -6,11 +6,23 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/10 09:04:44 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:40:32 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	export_is_path(t_data *info, char *s, char *p)
+{
+	if (!ft_strcmp(s, "PATH"))
+	{
+		two_pointer_free(info->paths);
+		info->paths = ft_split(p, ':');
+		int i = -1;
+		while (info->paths[++i])
+			printf("pathmi: (%s)\n", info->paths[i]);
+	}
+}
 
 void    export_builtin(t_data *info)
 {
@@ -41,6 +53,7 @@ void	change_export(t_data *info, char *s)
 		tmp2 = ft_substr(s, find_i(s, '=') + 1, 
 			ft_strlen(s) - find_i(s, '=') + 1);
 		export_control_and_change(info->export_lst, tmp, tmp2, 1);
+		export_is_path(info, tmp, tmp2);
 	}
 	else
 		export_control_and_change(info->export_lst, s, ft_strdup(""), 0);
@@ -58,19 +71,15 @@ int	export_syntax(t_data *info)
 		ft_lstadd_back(&tlst, ft_lstnew((void *)(long)info->cmd->flags[i], info->cmd->commands[i]));
 	s = lst_redirect_combining(tlst);
 	i = -1;
-		while (s[++i])
-			printf("gelen: (%s)\n", s[i]);
-	i = -1;
 	while (s[++i])
 		if (ft_char_count(s[i], '='))
 			if (find_i(s[i], '=') == 0)
-				return (err_message("Syntax Error"));
+				return (err_message(info, "Syntax Error"));
 	i = -1;
 	while (s[++i])
 		change_export(info, s[i]);
 	return (0);
 }
-
 
 void    env_builtin(t_data *info)
 {
@@ -84,6 +93,7 @@ void    env_builtin(t_data *info)
     }
     exit(0);
 }
+
 
 int	export_control_and_change(t_list *info, char *s, char *p, int i)
 {
@@ -118,7 +128,7 @@ int    add_export(t_data *info, char *rl)
 	{
 		export_syntax(info);
         free_info_and_rl(info, rl);
-		ft_lstclear(&info->arg);
+		info->exit_code = 0;
     	return (1);
 	}
     return (0);

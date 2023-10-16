@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_str.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:43 by museker           #+#    #+#             */
-/*   Updated: 2023/10/07 20:30:45 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/10 19:57:18 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ char	*replace_dollar(t_data *info, char *s)
 		}
 		temp = temp->next;
 	}
+	if (!ft_strcmp(s, "?"))
+		return (ft_strdup(ft_itoa(info->exit_code % 255)));
 	if (!temp)
 		return(ft_strdup(""));
 	temp_str = ft_strdup(s);

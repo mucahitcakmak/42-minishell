@@ -6,13 +6,13 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 21:04:17 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 10:27:57 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:43:40 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int    err_message(char *msg)
+int    err_message(t_data *info, char *msg)
 {
     int fd;
 
@@ -24,6 +24,7 @@ int    err_message(char *msg)
     }
     else
         wait(&fd);
+	info->exit_code = 1;
     return (1);
 }
 
@@ -80,7 +81,7 @@ int    check_pipe(char *r)
     return (0);
 }
 
-int    check_syntax(char *rl)
+int    check_syntax(t_data *info, char *rl)
 {
     int     check;
     char    *s;
@@ -91,9 +92,9 @@ int    check_syntax(char *rl)
     l = ft_strlen(s) - 1;
     if (s[l] == '|' || s[l] == '>' || s[l] == '<'
        || s[0] == '|')
-        return (err_message("Syntax Error"));
+        return (err_message(info, "Syntax Error"));
     free(s);
     if (check_pipe(rl))
-        return (err_message("Syntax Error"));
+        return (err_message(info, "Syntax Error"));
     return (0);
 }

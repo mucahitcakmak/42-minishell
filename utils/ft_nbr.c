@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_nbr.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/08 18:43:19 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/10 19:29:38 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,48 @@ int	ft_atoi(const char *nptr)
 void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
+}
+
+static int	ft_nbrlen(int n)
+{
+	int	i;
+
+	i = 0;
+	if (n <= 0)
+		i = 1;
+	while (n)
+	{
+		n /= 10;
+		++i;
+	}
+	return (i);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*str;
+	int		len;
+
+	len = ft_nbrlen(n);
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	if (n == 0)
+		str[0] = '0';
+	if (n < 0)
+	{
+		str[0] = '-';
+		if (n == -2147483648)
+		{
+			str[--len] = '8';
+			n /= 10;
+		}
+		n = -n;
+	}
+	while (len-- && n != 0)
+	{
+		str[len] = (n % 10) + '0';
+		n /= 10;
+	}
+	return (str);
 }

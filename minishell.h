@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 16:43:11 by museker           #+#    #+#             */
-/*   Updated: 2023/10/10 08:59:43 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/10 19:48:20 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <string.h>
 # include <signal.h>
 # include <fcntl.h>
-
+#include <dirent.h>
+#include <sys/wait.h>
 # define Q0 0
 # define Q1 1
 # define Q2 2
@@ -52,12 +53,11 @@ typedef struct s_data
 	int				pipe_count;
 	t_list			*env_lst;
 	t_list			*export_lst;
+	int				exit_code;
 	t_commands		*cmd;
 	t_list			*arg;
 	t_process		*process;
 }	t_data;
-
-t_data	*g_data;
 
 // main.c
 int			free_info_and_rl(t_data *info, char *rl);
@@ -70,12 +70,15 @@ int 		check_builtin_str(t_data *info, char *str);
 int 		main_builtin(t_data *info, char *rl);
 void		child_builtin(t_data *info, char **s, int count);
 
+// builtin/cd_builtin.c
+int			cd_builtin(t_data *info, char *rl);
+int			unset_builtin(t_data *info, char *rl);
 // builtin/echo_builtin.c
 int    		echo_check_n(t_data *info, char **s, int c);
 void    	echo_builtin(t_data *info, char **s, int c);
 
 // builtin/exit_builtin.c
-int    exit_builtin(t_data *info, char *rl);
+int			exit_builtin(t_data *info, char *rl);
 
 // builtin/export_builtin.c
 int			add_export(t_data *info, char *rl);
@@ -98,22 +101,23 @@ void		pipe_finder(t_data *info, int *count);
 void		pipe_close(t_data *info);
 
 // exec/redirect.c
-char	**redirect(t_data *info, int count);
+char		**redirect(t_data *info, int count);
 
 // exec/utils.c
-char	**lst_redirect_combining(t_list *lst);
+char		**lst_redirect_combining(t_list *lst);
 
 // lexer/check_syntax.c
-int    err_message(char *msg);
-int    check_pipe(char *rl);
-int    check_syntax(char *rl);
+int			err_message(t_data *info, char *msg);
+int			check_pipe(char *rl);
+int			check_syntax(t_data *info, char *rl);
 
 // lexer/lexer_str.c
 char		*check_dollar(t_data *info, char *s);
 void		*dollar_split(t_data *info, char *s, int *in);
 void		*no_dollar_split(char *s, int *in);
 char		*replace_dollar(t_data *info, char *s);
-
+t_list		*find_and_get_lst(t_list *lst, char *s);
+void		ft_lstclear(t_list **lst);
 // lexer/lexer_utils.c
 int			pipe_ct(char *read_line);
 char		*add_space(char *rd);
@@ -125,14 +129,16 @@ void		two_pointer_free(char **s);
 
 // lexer/lexer.c
 int			lexer(t_data *info, char *read_line);
-int			check_read_line(char *rl);
+int			check_read_line(t_data *info, char *rl);
 void		quote(t_data *info, char *read_line);
 void		quotes(t_data *info, char *read_line, int *index, int c1);
 void		no_quote(t_data *info, char *read_line, int *index);
 char		*char_combining(char **s);
-
 // utils/ft_nbr.c
 int			ft_atoi(const char *nptr);
+static int	ft_nbrlen(int n);
+char		*ft_itoa(int n);
+
 
 // utils/lst_all.c
 t_list		*ft_lstnew(void *key, void *value);
@@ -164,7 +170,7 @@ char		*ft_strtrim(char const *s1, char const *set);
 void		ft_putstr_fd(char *s, int fd);
 
 
-void	signal_handler(int signal);
-void	ft_putchar_fd(char c, int fd);
+void		signal_handler(int signal);
+void		ft_putchar_fd(char c, int fd);
 
 #endif
