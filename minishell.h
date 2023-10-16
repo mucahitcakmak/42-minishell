@@ -62,6 +62,9 @@ void		find_path_and_exec(t_data *info, char **read_line);
 int			create_fork_and_exec(t_data *info, char **read_line);
 void		set_env_p(t_data *info, char **env_p);
 
+// builtin/builtin.c
+void	builtin(t_data *info, char **s, int count);
+
 // exec/exec.c
 void		exec(t_data *info);
 int			exec_command(t_data *info, char **read_line, int count, int i);

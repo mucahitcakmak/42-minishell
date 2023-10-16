@@ -56,6 +56,7 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 	{
 		ft_process_merge(info, i);
 		new_exec = redirect(info, count);
+		builtin(info, new_exec, count);
 		find_path_and_exec(info, new_exec);
 		printf("minishell: %s: command not found\n", new_exec[0]);
 		exit(42);
