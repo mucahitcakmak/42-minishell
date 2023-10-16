@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/07 19:53:56 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/08 09:42:08 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ void exec(t_data *info)
 	i = -1;
 	pipe_close(info);
 	while (waitpid(-1, NULL, 0) > 0);
-	// printle anladım ama fork kapanmıyorsa buraya gelmez sorun
-	// forkun kapanıyor olması lazım hayır buldum kapanmıyorexecute da sorun var
-	// anasını avradını
 }
 
 int	exec_command(t_data *info, char **read_line, int count, int i)
@@ -60,7 +57,7 @@ void	create_fork(t_data *info, char **read_line, int count, int i)
 	{
 		ft_process_merge(info, i);
 		new_exec = redirect(info, count);
-		// builtin(info, new_exec, count);
+		builtin(info, new_exec, count);
 		find_path_and_exec(info, new_exec);
 		exit(42);
 	}
@@ -87,35 +84,4 @@ void	find_path_and_exec(t_data *info, char **read_line)
 		}
 		free(tmp);
 	}
-}
-
-char	**read_line_edit(t_data *info, int index)
-{
-	int		i;
-	int		temp;
-	char	**s;
-	char	*tmp;
-
-	temp = index;
-	while (info->cmd->commands[++index])
-		if (ft_strchr(info->cmd->commands[index], '|')
-			&& info->cmd->flags[index] == Q0)
-			break ;
-	s = (char **)malloc(sizeof(char *) * (index - temp + 1));
-	i = 0;
-	while (info->cmd->commands[temp] && temp < index)
-	{
-		if (info->cmd->flags[temp] == Q0)
-		{
-			tmp = info->cmd->commands[temp++];
-			if (tmp[0])
-				s[i++] = ft_strtrim(tmp, " ");
-			else
-				s[i++] = tmp;
-		}
-		else
-			s[i++] = info->cmd->commands[temp++];
-	}
-	s[i] = NULL;
-	return (s);
 }

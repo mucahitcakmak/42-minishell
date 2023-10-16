@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/07 19:55:25 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/08 10:03:50 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char *argv[], char **env_p)
 		two_pointer_free(info->cmd->commands);
 		free(info->cmd->flags);
 		free(read_line);
-		ft_lstclear(&info->arg); // PATLADI NOLDU
+		ft_lstclear(&info->arg);
 	}
 	return (0);
 }

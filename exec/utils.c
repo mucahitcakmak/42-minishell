@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/07 19:53:39 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/08 10:03:44 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_list	*new_lst(t_list *lst)
 	while (lst)
 	{
 		j = -1;
-		tmp = get_index(lst->value, ' ', (int)lst->key);
+		tmp = get_index(lst->value, ' ', (long)lst->key);
 		while (lst->value[++j] && j < tmp)
 			i++;
 		if (lst->value[j] == ' ' && lst->key == Q0)
@@ -55,10 +55,10 @@ char	*get_str(t_list *lst)
 	while (lst)
 	{
 		j = -1;
-		tmp = get_index(lst->value, ' ', (int)lst->key);
+		tmp = get_index(lst->value, ' ', (long)lst->key);
 		while (lst->value[++j] && j < tmp)
 			s[++i] = lst->value[j];
-		if (lst->value[j] == ' ' && lst->key == Q0) // bekle ama bir şeyi daha yapıcam
+		if (lst->value[j] == ' ' && lst->key == Q0)
 			break ;
 		lst = lst->next;
 	}
@@ -70,6 +70,7 @@ char	**lst_redirect_combining(t_list *lst)
 {
 	int		k;
 	char	**str;
+	char	*t;
 	t_list	*tmp;
 
 	k = -1;
@@ -81,15 +82,13 @@ char	**lst_redirect_combining(t_list *lst)
 			lst = lst->next;
 			continue ;
 		}
-		str[++k] = get_str(lst);
+		t = get_str(lst);
+		if (t[0])
+			str[++k] = t; 
 		lst = new_lst(lst);
-		if (!lst)
-			break;
-		lst = lst->next;
+		if (lst)
+			lst = lst->next;
 	}
 	str[++k] = 0;
-	// k = -1;
-	// while (str[++k])
-	// 	printf("str:: (%s)\n", str[k]);
 	return (str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: museker <museker@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/07 19:50:28 by museker          ###   ########.fr       */
+/*   Updated: 2023/10/08 09:44:25 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ char	*rd_last_str(t_list	*lst)
 		s = ft_strdup(lst->value);
 	free(lst->value);
 	free(red->value);
-	lst->value = ft_strdup("");
+	if (lst->key == Q0)
+		lst->value = ft_strdup(" ");
+	else
+		lst->value = ft_strdup("");
 	red->value = ft_strdup("");
 	return (s);
 }
@@ -165,36 +168,6 @@ void	lst_run_redirect(t_data *info, t_list **lst)
 			tmp = tmp->next;
 	}
 }
-char	**ft_abc(t_data *info, char **s, int count)
-{
-	int	i;
-	char	**p;
-	int	j;
-	int	k;
-	int	l;
-
-	p = malloc(sizeof(char *) * 1000);
-	j = -1;
-	i = -1;
-	k = 0;
-	while (s[++i])
-	{
-		if (!s[i][0] ||
-			(s[i][0] == ' ' && info->cmd->flags[count + i] == Q0))
-			continue ;
-		if (!ft_strchr(s[i], ' '))
-			p[k++] = ft_strdup(s[i]);
-		else
-		{
-			if (info->cmd->flags[count + i] == Q1)
-				p[k++] = ft_strdup(s[i]);
-			else
-				p[k++] = ft_substr(s[i], 0, ft_find_index(s[i], ' '));
-		}
-	}
-	p[k] = NULL;
-	return (p);
-}
 
 char	**redirect(t_data *info, int count)
 {
@@ -205,30 +178,9 @@ char	**redirect(t_data *info, int count)
 	lst = NULL;
 
 	lst_add_redirect(info, &lst, count);
-	// lst_run_redirect(info, &lst);
+	lst_run_redirect(info, &lst);
 
 	str = lst_redirect_combining(lst);
 	return (str);
 }
  
-// ech"o" <<merhaba >> arkadalasr > b"e"n 'muco'
-// lst: (ech)
-// lst: (o)
-// lst: ( )
-// lst: ()
-// lst: (<<)
-// lst: (merhaba )
-// lst: ()
-// lst: ()
-// lst: (>>)
-// lst: ( )
-// lst: ()
-// lst: (arkadalasr )
-// lst: ()
-// lst: (>)
-// lst: ( )
-// lst: ()
-// lst: (b)
-// lst: (e)
-// lst: (n )
-// lst: (muco)
