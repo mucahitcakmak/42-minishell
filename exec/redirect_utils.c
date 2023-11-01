@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:06:32 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/16 15:05:39 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/16 16:32:43 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	overwrite_output(t_data *info, t_list *lst)
 	fd = open(s, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	dup2(fd, 1);
 	close(fd);
+	pipe_close(info);
 	return ;
 }
 
@@ -35,6 +36,7 @@ void	append_output(t_data *info, t_list *lst)
 	fd = open(s, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	dup2(fd, 1);
 	close(fd);
+	pipe_close(info);
 	return ;
 }
 
@@ -46,8 +48,14 @@ void	overwrite_input(t_data *info, t_list *lst)
 	(void)info;
 	s = rd_last_str(lst);
 	fd = open(s, O_RDONLY, 0644);
+	if (fd == -1)
+	{
+		printf("minishell: %s: No such file or directiory\n", s);
+		exit(1);
+	}
 	dup2(fd, 0);
 	close(fd);
+	pipe_close(info);
 	return ;
 }
 
@@ -62,12 +70,10 @@ void	append_input(t_data *info, t_list *lst, int i)
 	signal(SIGINT, ft_sig_handler);
 	while (1)
 	{
-		if (g_data->hd->flag)
-			break ;
 		rd = readline("> ");
 		if (!ft_strcmp(rd, s))
 			break ;
-		if (counter == info->hd->flag)
+		if (counter == info->hd[i].flag)
 		{
 			ft_putstr_fd(rd, info->hd[i].fd[1]);
 			ft_putchar_fd('\n', info->hd[i].fd[1]);

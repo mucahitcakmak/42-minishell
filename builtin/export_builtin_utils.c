@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 23:09:37 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/16 15:10:58 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/16 19:53:52 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	export_is_path(t_data *info, char *s, char *p)
 
 int	check_valid(char *s1, char *s2, int i)
 {
-	if (char_c(s2, ' ') || char_c(s2, '?') || char_c(s2, '-') 
+	if (char_c(s2, ' ') || char_c(s2, '?') || char_c(s2, '-')
 		|| char_c(s2, '/') || char_c(s2, '@') || char_c(s2, '#')
 		|| char_c(s2, ':') || char_c(s2, '%') || char_c(s2, '.')
 		|| char_c(s2, ',') || char_c(s2, '$') || char_c(s2, '+')

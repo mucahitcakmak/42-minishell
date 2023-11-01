@@ -1,60 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_builtin.c                                     :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 15:17:23 by mucakmak          #+#    #+#             */
+/*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
 /*   Updated: 2023/10/16 19:53:52 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	echo_check_n(t_data *info, char **s, int c)
+void	is_directory_exit(char *s, char *rl, int a)
 {
-	int	i;
-	int	j;
-
-	(void)c;
-	(void)info;
-	i = 1;
-	if (s[i] && s[i][0] != '-')
-		return (0);
-	while (s[i] && s[i][0] == '-' && s[i][1] == 'n')
-	{
-		j = 1;
-		while (s[i][j])
-			if (s[i][j++] != 'n')
-				return (i - 1);
-		i++;
-	}
-	return (i - 1);
+	printf("minishell: %s: %s\n", s, rl);
+	exit(a);
 }
 
-void	echo_builtin(t_data *info, char **s, int c)
+void	is_directory(t_data *info, char **rl)
 {
-	int	i;
-	int	flag;
+	struct stat	*sb;
+	int			stat_int;
 
 	(void)info;
-	i = 1;
-	if (!s[1])
+	sb = malloc(sizeof(struct stat));
+	stat_int = stat(rl[0] + 2, sb);
+	if (stat_int == -1)
+		is_directory_exit(rl[0], "No such file or directory", 127);
+	else
 	{
-		printf("\n");
-		exit(0);
+		if (S_ISDIR(sb->st_mode))
+			is_directory_exit("is a directory", rl[0], 126);
+		else
+		{
+			if (access(rl[0] + 2, X_OK))
+				is_directory_exit("Permission denied", rl[0], 126);
+			else
+				perror("minishell: ");
+			exit(1);
+		}
 	}
-	flag = echo_check_n(info, s, c);
-	if (flag)
-		i += flag;
-	while (s[i])
-	{
-		printf("%s", s[i++]);
-		if (s[i])
-			printf(" ");
-	}
-	if (flag == 0)
-		printf("\n");
-	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: mucakmak <mucakmak@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:15:11 by mucakmak          #+#    #+#             */
-/*   Updated: 2023/10/16 15:05:39 by mucakmak         ###   ########.fr       */
+/*   Updated: 2023/10/16 19:53:51 by mucakmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	exec(t_data *info, char *rl)
 	int	i;
 	int	count;
 
+	(void)rl;
 	info->pipe_count = find_pipe_count(info);
 	info->process = malloc(sizeof(t_process) * (info->pipe_count + 1));
 	info->hd = malloc(sizeof(t_heredoc) * (info->pipe_count + 1));
@@ -36,9 +37,6 @@ void	exec(t_data *info, char *rl)
 	pipe_close(info);
 	while (waitpid(-1, &g_data->exit_code, 0) > 0)
 		;
-	free_info_and_rl(info, rl);
-	free(info->process);
-	free(info->hd);
 	g_data->check_fork = 0;
 }
 
@@ -46,6 +44,7 @@ int	exec_command(t_data *info, char **read_line, int count, int i)
 {
 	if (!read_line[0])
 		return (0);
+	g_data->check_fork = 2;
 	create_fork(info, read_line, count, i);
 	return (0);
 }
@@ -109,14 +108,11 @@ void	find_path_and_exec(t_data *info, char **rl)
 		tmp = ft_strjoin(tmp2, rl[0]);
 		free(tmp2);
 		if (access(tmp, F_OK) != -1)
-		{
 			execve(tmp, rl, info->env_p);
-			free(tmp);
-		}
 		free(tmp);
 	}
 	if (access(rl[0], F_OK) != -1)
-	{
 		execve(rl[0], rl, info->env_p);
-	}
+	if (rl[0][0] == '.' && rl[0][1] == '/')
+		is_directory(info, rl);
 }

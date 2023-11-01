@@ -13,8 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -24,6 +22,10 @@
 # include <dirent.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
+# include <termios.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define Q0 0
 # define Q1 1
@@ -120,10 +122,10 @@ int			add_export(t_data *info, char *rl);
 int			err_export(t_data *info, char **s, t_list *tlst);
 
 // signals.c
+void		suppress_output(void);
 void		ft_sig_handler(int sig);
 void		check_sigint(t_data *info, char *rl);
 int			err_message(t_data *info, char *msg);
-void		hg_signal(int sig);
 
 // unset_builtin.c
 void		unset_is_path(t_data *info, t_list *path_lst);
@@ -140,6 +142,10 @@ int			exec_command(t_data *info, char **read_line, int count, int i);
 int			heredoc_check(t_data *info, int i);
 void		create_fork(t_data *info, char **read_line, int count, int i);
 void		find_path_and_exec(t_data *info, char **rl);
+
+// exec_utils.c
+void		is_directory_exit(char *s, char *rl, int a);
+void		is_directory(t_data *info, char **rl);
 
 // pipes.c
 void		ft_process_merge(t_data *info, int i);
